@@ -75,6 +75,16 @@ public class Vehicle implements Serializable{
 	}
 
 
+	public int getVehicleType() {
+		return vehicleType;
+	}
+
+
+	public void setVehicleType(int vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+
+
 	
 	
 
