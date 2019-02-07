@@ -1,13 +1,9 @@
 package co.com.ceiba.ceibaadn.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import co.com.ceiba.ceibaadn.model.Vehicle;
 
 

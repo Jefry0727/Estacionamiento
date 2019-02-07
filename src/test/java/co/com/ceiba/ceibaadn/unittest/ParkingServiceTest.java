@@ -41,10 +41,6 @@ import org.mockito.MockitoAnnotations;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @ContextConfiguration
-//@ComponentScan()
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@DataJpaTest
 public class ParkingServiceTest {
 	
 	@Mock

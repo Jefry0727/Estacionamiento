@@ -3,8 +3,6 @@ package co.com.ceiba.ceibaadn.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +20,19 @@ public class PaymentService implements IPaymentService {
 
 	private static final double MOTORCYCLE_HOUR_PRICE = 500.0;
 
-	private static final double CAR_DAY_PRICE = 8000;
+	private static final double CAR_DAY_PRICE = 8000.0;
 
 	private static final double MOTORCYCLE_DAY_PRICE = 4000.0;
 
 	private static final int MAX_CYLINDER = 500;
 
-	private static final double PRICE_MAX_CYLINDER = 2000;
+	private static final double PRICE_MAX_CYLINDER = 2000.0;
 
 	private static final String VEHICLE_NOT_PARKING = "El vehículo no se encuentra estacionado";
+	
+	private static final String FORMAT_DATE = "YYYY-MM-DD";
+	
+	private static final String FORMAT_DATE_TIME = "YYYY-MM-DD HH:mm:ss";
 
 	@Autowired
 	private IPaymentRepository paymentRepository;
@@ -91,7 +93,7 @@ public class PaymentService implements IPaymentService {
 			
 			
 
-//			parkingRepository.save(parking);
+			parkingRepository.save(parking);
 
 		}
 	}
@@ -101,9 +103,9 @@ public class PaymentService implements IPaymentService {
 	
 	public int calculateTimeInside(Parking parking) throws ParseException {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
 
-		SimpleDateFormat dateFormatCheckInOut = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
+		SimpleDateFormat dateFormatCheckInOut = new SimpleDateFormat(FORMAT_DATE_TIME);
 
 		/*
 		 * fecha de entrada
