@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.com.ceiba.ceibaadn.dto.PaymentDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Payment;
@@ -44,7 +45,15 @@ public class PaymentService implements IPaymentService {
 	@Autowired
 	private QueryRepository queryRepository;
 
-	public void updateParking(String licensePlate) throws ParkingException, ParseException {
+	public PaymentService(IPaymentRepository paymentRepository, IParkingRepository parkingRepository,
+			QueryRepository queryRepository) {
+		super();
+		this.paymentRepository = paymentRepository;
+		this.parkingRepository = parkingRepository;
+		this.queryRepository = queryRepository;
+	}
+
+	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
 
@@ -88,16 +97,27 @@ public class PaymentService implements IPaymentService {
 				break;
 			}
 
-			parkingRepository.save(parking);
-			
-			Payment payment = new Payment(parking,price,timeInside);
-			
+			Payment payment = updateParking(parking, price, timeInside);
+
 			paymentRepository.save(payment);
+
+			PaymentDTO paymentDTO = new PaymentDTO(payment.getId(), payment.getParking(), payment.getTotalPrice(),
+					payment.getTimeInside());
+			
+			return paymentDTO;
 
 		}
 	}
+	
+	
+	public Payment updateParking(Parking parking, double price, int timeInside) {
+		
+		parkingRepository.save(parking);
 
-
+		return new Payment(parking, price, timeInside);
+		
+		
+	}
 
 	public int calculateTimeInside(Parking parking) throws ParseException {
 

@@ -26,7 +26,7 @@ public class IndexController {
 		
 		try {
 			
-			paymentService.updateParking(vehicleDTO.getLicenseDTO());
+			paymentService.savePayment(vehicleDTO.getLicenseDTO());
 			
 			return new ResponseEntity<>("Success", HttpStatus.OK);
 			

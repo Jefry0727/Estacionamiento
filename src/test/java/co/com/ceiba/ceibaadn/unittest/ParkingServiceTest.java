@@ -245,5 +245,22 @@ public class ParkingServiceTest {
 		
 		assertTrue(validate);
 	}
+	
+	@Test
+	public void validateLicensePlateAndDaysTest() {
+		
+		
+		// Arrange
+		Mockito.doReturn(true).when(parkingService).validateDay();
+		
+		// act
+		
+		boolean validate = parkingService.validateLicensePlateAndDays(VehicleBuilderTest.LICENSE_PLATE_SUNDAY_MONDEY);
+		
+		// assert
+		
+		assertTrue(validate);
+		
+	}
 
 }

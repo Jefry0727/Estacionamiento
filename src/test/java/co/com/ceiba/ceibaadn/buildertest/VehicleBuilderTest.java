@@ -10,6 +10,8 @@ public class VehicleBuilderTest {
 	
 	public static final String LICENSE_PLATE_INVALIDATE = "HNA88YY";
 	
+	public static final String LICENSE_PLATE_SUNDAY_MONDEY = "AHJ343";
+	
 	public static final int TYPE_MOTORCYCLE = 1;
 	
 	public static final int TYPE_INVALIDATE = 0;
