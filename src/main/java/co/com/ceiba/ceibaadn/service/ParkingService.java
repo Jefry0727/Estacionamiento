@@ -1,6 +1,6 @@
 package co.com.ceiba.ceibaadn.service;
 
-
+import java.lang.annotation.Documented;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +39,8 @@ public class ParkingService implements IParkingService {
 
 	private static final String VEHICLE_PARKED = "El vehículo ya esta en el estacionamiento";
 
+	private static final String VEHICLE_NOT_ALLOWED = "El vehículo no se puede ingresar al estacionamiento";
+
 	@Autowired
 	private IParkingRepository parkingRepository;
 
@@ -50,11 +52,12 @@ public class ParkingService implements IParkingService {
 
 	GregorianCalendar calendar = new GregorianCalendar();
 
-	
-	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository) {
+	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository,
+			QueryRepository queryRepository) {
 		super();
 		this.parkingRepository = parkingRepository;
 		this.vehicleRepository = vehicleRepository;
+		this.queryRepository = queryRepository;
 	}
 
 	public ParkingService() {
@@ -63,21 +66,20 @@ public class ParkingService implements IParkingService {
 
 	}
 
-	
 	@Override
 	public ParkingDTO saveParkinIn(VehicleDTO object) throws ParkingException {
 
 		Vehicle vehicle = null;
 
 		ParkingDTO parking = null;
-		
-		if(queryRepository.findVehicleParking(object.getLicenseDTO()) != null) {
-			
+
+		if (queryRepository.findVehicleParking(object.getLicenseDTO()) != null) {
+
 			throw new ParkingException(VEHICLE_PARKED);
-			
+
 		}
 
-		if (validateLicensePlateByDays(object.getLicenseDTO())) {
+		if (validateLicensePlateAndDays(object.getLicenseDTO())) {
 
 			vehicle = vehicleRepository.findVehicleByLicense(object.getLicenseDTO());
 
@@ -86,7 +88,6 @@ public class ParkingService implements IParkingService {
 				int validateTypeVehicle = validateTypeVehicle(object.getLicenseDTO());
 
 				boolean validateQuantity = validateQuantityVehicle(validateTypeVehicle);
-
 
 				if (validateTypeVehicle == 0) {
 
@@ -101,7 +102,8 @@ public class ParkingService implements IParkingService {
 
 				if (validateTypeVehicle == 1) {
 
-					Vehicle motorcycle = new Motorcycle(object.getLicenseDTO(), object.getCylinderDTO(), validateTypeVehicle);
+					Vehicle motorcycle = new Motorcycle(object.getLicenseDTO(), object.getCylinderDTO(),
+							validateTypeVehicle);
 
 					vehicle = saveVehicle(motorcycle);
 
@@ -116,12 +118,17 @@ public class ParkingService implements IParkingService {
 			}
 
 			parking = saveParking(vehicle);
+		}else {
+			
+			throw new ParkingException(VEHICLE_NOT_ALLOWED);
+			
 		}
 
 		return parking;
 
 	}
 
+	@Override
 	public Vehicle saveVehicle(Vehicle vehicle) {
 
 		vehicleRepository.save(vehicle);
@@ -129,7 +136,7 @@ public class ParkingService implements IParkingService {
 		return vehicle;
 	}
 
-	
+	@Override
 	public ParkingDTO saveParking(Vehicle vehicle) {
 
 		SimpleDateFormat dt = new SimpleDateFormat("HH:mm:ss");
@@ -143,28 +150,72 @@ public class ParkingService implements IParkingService {
 		parkingRepository.save(parking);
 
 		ParkingDTO parkingDTO = new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
-				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState());
+				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), parking.getVehicle());
 
 		return parkingDTO;
 
 	}
 
-	
-	public boolean validateLicensePlateByDays(String license) {
+	/**
+	 * 
+	 * <p>
+	 * <b> Valida si la placa inicia en la letra A, solo se pueda registra los lunes
+	 * y domingos</b>
+	 * </p>
+	 * <br/>
+	 * <ul>
+	 * <li></li>
+	 * </ul>
+	 * <br/>
+	 * 
+	 * @author Jefry Londoño <br/>
+	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
+	 * @version 1.0
+	 * @param license
+	 * @return
+	 */
+	public boolean validateLicensePlateAndDays(String license) {
 
 		Pattern patron = Pattern.compile(PATTERN);
 
 		Matcher encaja = patron.matcher(license);
 
-		if (encaja.find() && validateDay()) {
+		if (encaja.find()) {
+			
+			if(validateDay()) {
+				
+				return true;
+				
+			}else {
+				
+				return false;
+				
+			}
 
-			return false;
 
 		}
 
 		return true;
 	}
 
+	/**
+	 * 
+	 * <p>
+	 * <b>Valida que la cantidad de vehiculos tanto carro como moto no se pase del
+	 * tope </b>
+	 * </p>
+	 * <br/>
+	 * <ul>
+	 * <li></li>
+	 * </ul>
+	 * <br/>
+	 * 
+	 * @author Jefry Londoño <br/>
+	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
+	 * @version 1.0
+	 * @param typeVehicle
+	 * @return
+	 */
 	public boolean validateQuantityVehicle(int typeVehicle) {
 
 		int quantity = queryRepository.quantityVehicleByType(typeVehicle);
@@ -202,8 +253,19 @@ public class ParkingService implements IParkingService {
 	}
 
 	/**
-	 * Jefry Londoño
 	 * 
+	 * <p>
+	 * <b> Valida que el dia actual sea un lunes o un domingo</b>
+	 * </p>
+	 * <br/>
+	 * <ul>
+	 * <li></li>
+	 * </ul>
+	 * <br/>
+	 * 
+	 * @author Jefry Londoño <br/>
+	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
+	 * @version 1.0
 	 * @return
 	 */
 	public boolean validateDay() {
@@ -213,17 +275,36 @@ public class ParkingService implements IParkingService {
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
 				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
 
-			return false;
+			return true;
 
 		}
 
-		return true;
+		return false;
 
+	}
+	
+	public void setCalendario(GregorianCalendar calendar) {
+		this.calendar = calendar;
 	}
 
 	/**
-	 * Jefry Londoño Valida que tipo de vehiculo se va a estacionar 1 moto 2 carro
 	 * 
+	 * <p>
+	 * <b>Valida que tipo de vehiculo es el que se va a ingresar teniendo en cuanta
+	 * que: </b>
+	 * </p>
+	 * <br/>
+	 * <ul>
+	 * <li>si es un carro las placas seran compuestas por tres letras seguida de
+	 * tres digitos</li>
+	 * <li>si es una moto las placas seran compuestas por tres letras seguida de dos
+	 * digitos y una letra o solo de tres letras y dos digitos</li>
+	 * </ul>
+	 * <br/>
+	 * 
+	 * @author Jefry Londoño <br/>
+	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
+	 * @version 1.0
 	 * @param licensePlate
 	 * @return
 	 * @throws ParkingException

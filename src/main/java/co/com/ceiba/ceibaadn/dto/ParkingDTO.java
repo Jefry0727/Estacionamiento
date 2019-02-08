@@ -3,6 +3,8 @@ package co.com.ceiba.ceibaadn.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import co.com.ceiba.ceibaadn.model.Vehicle;
+
 public class ParkingDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -18,6 +20,8 @@ public class ParkingDTO implements Serializable{
 	private Date dateCheckOutDTO;
 	
 	private int stateDTO;
+	
+	private Vehicle vehicleDTO;
 
 	public ParkingDTO() {
 		
@@ -27,7 +31,7 @@ public class ParkingDTO implements Serializable{
 	
 
 	public ParkingDTO(int idDTO, String hourCheckInDTO, String hourCheckOutDTO, Date dateCheckInDTO,
-			Date dateCheckOutDTO, int stateDTO) {
+			Date dateCheckOutDTO, int stateDTO, Vehicle vehicleDTO) {
 		super();
 		this.idDTO = idDTO;
 		this.hourCheckInDTO = hourCheckInDTO;
@@ -35,6 +39,7 @@ public class ParkingDTO implements Serializable{
 		this.dateCheckInDTO = dateCheckInDTO;
 		this.dateCheckOutDTO = dateCheckOutDTO;
 		this.stateDTO = stateDTO;
+		this.vehicleDTO = vehicleDTO;
 	}
 
 
@@ -85,6 +90,16 @@ public class ParkingDTO implements Serializable{
 
 	public void setStateDTO(int stateDTO) {
 		this.stateDTO = stateDTO;
+	}
+
+
+	public Vehicle getVehicleDTO() {
+		return vehicleDTO;
+	}
+
+
+	public void setVehicleDTO(Vehicle vehicleDTO) {
+		this.vehicleDTO = vehicleDTO;
 	}
 
 	

@@ -9,11 +9,11 @@ public class ParkingException extends Exception{
 
 
 	public ParkingException(String message) {
-		super();
-		this.message = message;
+		super(message);
+
 	}
 
-
+	@Override
 	public String getMessage() {
 		return message;
 	}

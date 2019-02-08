@@ -37,6 +37,17 @@ public class Payment implements Serializable{
 		super();
 		
 	}
+	
+	
+
+	public Payment(Parking parking, double totalPrice, int timeInside) {
+		super();
+		this.parking = parking;
+		this.totalPrice = totalPrice;
+		this.timeInside = timeInside;
+	}
+
+
 
 	public int getId() {
 		return id;

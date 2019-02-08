@@ -4,13 +4,17 @@ import co.com.ceiba.ceibaadn.model.Vehicle;
 
 public class VehicleBuilderTest {
 
+	public static final String LICENSE_PLATE_CAR = "CLC889";
+	
+	public static final String LICENSE_PLATE_MOTORCYCLE = "HNA88E";
+	
+	private int id;
+	
 	private String licensePlate;
 	
 	private String cylinder;
 	
 	private int vehicleType;
-	
-	
     
     public VehicleBuilderTest(){
         this.licensePlate = "HNA88E";
@@ -20,6 +24,11 @@ public class VehicleBuilderTest {
     
     public VehicleBuilderTest withLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
+        return this;
+    }
+    
+    public VehicleBuilderTest withId(int id){
+        this.id = id;
         return this;
     }
     

@@ -1,9 +1,14 @@
 package co.com.ceiba.ceibaadn.unittest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,105 +25,149 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.ceibaadn.buildertest.VehicleBuilderTest;
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
+import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IVehicleRepository;
+import co.com.ceiba.ceibaadn.repository.QueryRepository;
+import co.com.ceiba.ceibaadn.service.IParkingService;
 import co.com.ceiba.ceibaadn.service.ParkingService;
 
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase
 @ContextConfiguration
 public class ParkingServiceTest {
-	
+
 	@Mock
 	IParkingRepository parkingRepository;
-	
+
 	@Mock
 	IVehicleRepository vehicleRepository;
 
+	@Mock
+	QueryRepository queryRepository;
+
 	@InjectMocks
 	ParkingService parkingService;
-	
+
 	VehicleBuilderTest vehicleBuilder = new VehicleBuilderTest();
-	
+
 	@Before
 	public void setUp() {
-		
+
 		MockitoAnnotations.initMocks(this);
-		
+
 		parkingService = mock(ParkingService.class);
-		
-		parkingService = spy(new ParkingService(parkingRepository,vehicleRepository));
+
+		parkingService = spy(new ParkingService(parkingRepository, vehicleRepository, queryRepository));
 	}
-	
+
+	public void saveParkinInCarTest() {
+
+	}
+
 	@Test
-	public void sevaParkingCar() {
-		
+	public void sevaParkingCarNotExistsTest() {
+
 		// Arrange
-		
-		
-		
-		Vehicle vehicle = vehicleBuilder.build();
-		System.out.println(vehicle.getLicensePlate());
-		// act
-		
-		Vehicle v = parkingService.saveVehicle(vehicle);
-//		
-		
-		boolean validate = false;
-		
-		if(v.getLicensePlate() == vehicle.getLicensePlate()) {
-			
-			validate = true;
-			
+		try {
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+
+			Vehicle vehicle = vehicleBuilder.withLicensePlate("CLC889").withVehicleType(2).build();
+
+			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
+			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
+
+			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(2);
+			Mockito.doReturn(false).when(parkingService).validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO());
+			when(parkingService.saveVehicle(vehicleBuilder.build())).thenReturn(vehicle);
+
+			// act
+			ParkingDTO parkingDTO = parkingService.saveParkinIn(vehicleDTO);
+
+			// assert
+
+			assertEquals(VehicleBuilderTest.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicensePlate());
+
+		} catch (ParkingException e) {
+
+			e.printStackTrace();
 		}
-		
-		// assert
-		
-		assertTrue(validate);
-		
 	}
-	
+
 	@Test
-	public void saveParkingFullTest() throws ParkingException {
-		
-		// arrange
-		ParkingDTO dto = new ParkingDTO();
-		
-		Vehicle vehicle = vehicleBuilder.build();
+	public void sevaParkingMotorcycleNotExistsTest() {
 
-		when(vehicleRepository.findVehicleByLicense(vehicle.getLicensePlate())).thenReturn(null);
-		//when(parkingService.validateTypeVehicle(vehicle.getLicensePlate())).thenReturn(1);
-		
-		// act
-		//Parking p = parkingService.saveParking(vehicle);
-		
-		boolean validate = false;
-		
-		if(true) {
-			
-			validate = true;
+		// Arrange
+		try {
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "HNA88E", "", 0);
+
+			Vehicle vehicle = vehicleBuilder.withLicensePlate("HNA88E").withVehicleType(1).build();
+
+			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
+			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
+
+			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(1);
+			Mockito.doReturn(false).when(parkingService).validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO());
+			when(parkingService.saveVehicle(vehicleBuilder.build())).thenReturn(vehicle);
+
+			// act
+			ParkingDTO parkingDTO = parkingService.saveParkinIn(vehicleDTO);
+
+			// assert
+
+			assertEquals(VehicleBuilderTest.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicensePlate());
+
+		} catch (ParkingException e) {
+
+			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void saveParkingTest() {
+
+		// arrange
+
+		Vehicle vehicle = vehicleBuilder.withId(1).build();
+
+		// act
+
+		ParkingDTO parkingDTO = parkingService.saveParking(vehicle);
+
+		// assert
+
+		assertNotNull(parkingDTO);
+
+	}
+
+	@Test
+	public void validateDayTest() {
+
+		// Arrange
+		GregorianCalendar calendar = Mockito.mock(GregorianCalendar.class);
+		Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
+		
+		//act
+		parkingService.setCalendario(calendar);
+		
+		boolean valiate = parkingService.validateDay();
 		
 		// assert
 		
-		assertTrue(validate);
-		
+		assertTrue(valiate);
 	}
-	
 
-	
 }
