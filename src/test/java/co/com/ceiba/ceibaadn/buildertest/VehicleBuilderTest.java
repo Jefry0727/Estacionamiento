@@ -8,6 +8,12 @@ public class VehicleBuilderTest {
 	
 	public static final String LICENSE_PLATE_MOTORCYCLE = "HNA88E";
 	
+	public static final String LICENSE_PLATE_INVALIDATE = "HNA88YY";
+	
+	public static final int TYPE_MOTORCYCLE = 1;
+	
+	public static final int TYPE_INVALIDATE = 0;
+	
 	private int id;
 	
 	private String licensePlate;

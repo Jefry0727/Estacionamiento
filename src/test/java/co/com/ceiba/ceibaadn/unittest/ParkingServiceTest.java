@@ -1,6 +1,7 @@
 package co.com.ceiba.ceibaadn.unittest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -14,25 +15,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.ceibaadn.buildertest.VehicleBuilderTest;
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
-import co.com.ceiba.ceibaadn.model.Parking;
+
 import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IVehicleRepository;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
-import co.com.ceiba.ceibaadn.service.IParkingService;
 import co.com.ceiba.ceibaadn.service.ParkingService;
 
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -72,9 +67,7 @@ public class ParkingServiceTest {
 		parkingService = spy(new ParkingService(parkingRepository, vehicleRepository, queryRepository));
 	}
 
-	public void saveParkinInCarTest() {
 
-	}
 
 	@Test
 	public void sevaParkingCarNotExistsTest() {
@@ -168,6 +161,89 @@ public class ParkingServiceTest {
 		// assert
 		
 		assertTrue(valiate);
+	}
+	
+	@Test
+	public void validateTypeVehicleMotorcycleTest() {
+		
+		try {
+		// Arrange
+		
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleBuilderTest.LICENSE_PLATE_MOTORCYCLE).build();
+		
+		// act 
+		
+			int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
+			
+		// assert
+			
+			Assert.assertEquals(validate, VehicleBuilderTest.TYPE_MOTORCYCLE);
+			
+		} catch (ParkingException e) {
+
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	@Test
+	public void validateTypeVehicleInvalidateTest() {
+		
+		try {
+		// Arrange
+		
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleBuilderTest.LICENSE_PLATE_INVALIDATE).build();
+		
+		// act 
+		
+			int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
+			
+		// assert
+			
+			Assert.assertEquals(validate, VehicleBuilderTest.TYPE_INVALIDATE);
+			
+		} catch (ParkingException e) {
+
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	@Test
+	public void validateQuantityVehicleMotorcycleTest() {
+		
+		// Arrange
+		
+		when(queryRepository.quantityVehicleByType(VehicleBuilderTest.TYPE_MOTORCYCLE)).thenReturn(9);
+		
+		// act 
+		
+		boolean validate = parkingService.validateQuantityVehicle(VehicleBuilderTest.TYPE_MOTORCYCLE);
+		
+		
+		// assert
+		
+		assertFalse(validate);
+	}
+	
+	
+	@Test
+	public void validateQuantityVehicleMotorcycleMaxTest() {
+		
+		// Arrange
+		
+		when(queryRepository.quantityVehicleByType(VehicleBuilderTest.TYPE_MOTORCYCLE)).thenReturn(10);
+		
+		// act 
+		
+		boolean validate = parkingService.validateQuantityVehicle(VehicleBuilderTest.TYPE_MOTORCYCLE);
+		
+		
+		// assert
+		
+		assertTrue(validate);
 	}
 
 }
