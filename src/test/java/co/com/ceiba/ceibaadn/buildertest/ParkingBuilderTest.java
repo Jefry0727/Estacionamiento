@@ -26,6 +26,12 @@ public class ParkingBuilderTest {
     SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD");
     
     public static final String HOUR_CHECK_OUT = "13:00:00"; 
+    
+    public static final String HOUR_CHECK_IN = "11:00:00"; 
+    
+    public static final String DATE_CHECK_IN = "2019-02-08"; 
+    
+    public static final String DATE_CHECK_OUT = "2019-02-08"; 
 
     public ParkingBuilderTest() {
 
@@ -62,6 +68,16 @@ public class ParkingBuilderTest {
 
     public ParkingBuilderTest withHourCheckOut(String hourCheckOut) {
         this.hourCheckOut = hourCheckOut;
+        return this;
+    }
+    
+    public ParkingBuilderTest withDateCheckIn(Date dateCheckIn) {
+        this.dateCheckIn = dateCheckIn;
+        return this;
+    }
+
+    public ParkingBuilderTest withDateCheckOut(Date dateCheckOut) {
+        this.dateCheckOut = dateCheckOut;
         return this;
     }
 

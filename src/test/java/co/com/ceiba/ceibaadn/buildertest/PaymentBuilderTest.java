@@ -7,6 +7,9 @@ public class PaymentBuilderTest {
 
 	public static final double PRICE_TEST = 3000.0;
 	
+	public static final int TIME_INSIDE = 57;
+
+	
 	private int id;
 
 	private Parking parking;

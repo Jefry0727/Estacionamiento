@@ -18,11 +18,11 @@ import co.com.ceiba.ceibaadn.repository.QueryRepository;
 @Service
 public class PaymentService implements IPaymentService {
 
-	private static final double CAR_HOUR_PRICE = 1000;
+	public static final double CAR_HOUR_PRICE = 1000;
 
 	private static final double MOTORCYCLE_HOUR_PRICE = 500.0;
 
-	private static final double CAR_DAY_PRICE = 8000.0;
+	public static final double CAR_DAY_PRICE = 8000.0;
 
 	private static final double MOTORCYCLE_DAY_PRICE = 4000.0;
 
@@ -56,6 +56,8 @@ public class PaymentService implements IPaymentService {
 	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
+		System.out.println("parking.getDateCheckIn()");
+		System.out.println(parking.getVehicle().getVehicleType());
 
 		if (parking == null) {
 
@@ -66,6 +68,8 @@ public class PaymentService implements IPaymentService {
 			SimpleDateFormat dt = new SimpleDateFormat("HH:mm:ss");
 
 			Date dateCheckOut = new Date();
+			System.out.println("dateCheckOut.getTime()");
+			System.out.println(dateCheckOut.getTime());
 
 			String checkOut = dt.format(dateCheckOut);
 
@@ -74,6 +78,9 @@ public class PaymentService implements IPaymentService {
 			parking.setState(0);
 
 			int timeInside = calculateTimeInside(parking);
+			
+			System.out.println("timeInside");
+			System.out.println(timeInside);
 
 			double price = 0.0;
 
@@ -98,6 +105,9 @@ public class PaymentService implements IPaymentService {
 			}
 
 			Payment payment = updateParking(parking, price, timeInside);
+			
+			System.out.println("update parking");
+			System.out.println(payment.getId());
 
 			paymentRepository.save(payment);
 
