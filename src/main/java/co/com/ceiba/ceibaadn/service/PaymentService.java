@@ -56,8 +56,8 @@ public class PaymentService implements IPaymentService {
 	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
-		System.out.println("parking.getDateCheckIn()");
-		System.out.println(parking.getVehicle().getVehicleType());
+//		System.out.println("parking.getDateCheckIn()");
+//		System.out.println(parking.getVehicle().getVehicleType());
 
 		if (parking == null) {
 
