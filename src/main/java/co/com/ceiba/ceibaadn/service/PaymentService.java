@@ -82,7 +82,7 @@ public class PaymentService implements IPaymentService {
 			System.out.println("timeInside");
 			System.out.println(timeInside);
 
-			double price = 0.0;
+			double price;
 			
 			int vehicleType = parking.getVehicle().getVehicleType();
 			
@@ -150,7 +150,7 @@ public class PaymentService implements IPaymentService {
 
 			int hours = 0;
 
-			hours = (int) diff / (60 * 60 * 1000);
+			hours = diff / (60 * 60 * 1000);
 
 			return hours;
 
