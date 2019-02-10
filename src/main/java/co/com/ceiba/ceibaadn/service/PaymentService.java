@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -155,7 +156,7 @@ public class PaymentService implements IPaymentService {
 
 		} catch (ParseException e) {
 
-			e.printStackTrace();
+			LogManager.getLogger(this.getClass()).info("ParseException, " + e.getMessage());
 
 		}
 		return 0;
