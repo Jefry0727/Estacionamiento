@@ -25,9 +25,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.com.ceiba.ceibaadn.buildertest.ParkingBuilderTest;
-import co.com.ceiba.ceibaadn.buildertest.PaymentBuilderTest;
-import co.com.ceiba.ceibaadn.buildertest.VehicleBuilderTest;
+import co.com.ceiba.ceibaadn.buildertest.ParkingDataBuilder;
+import co.com.ceiba.ceibaadn.buildertest.PaymentDataBuilder;
+import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
 import co.com.ceiba.ceibaadn.dto.PaymentDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
@@ -58,9 +58,9 @@ public class PaymentServiceTest {
 	@InjectMocks
 	PaymentService paymentService;
 
-	VehicleBuilderTest vehicleBuilder;
+	VehicleDataBuilder vehicleBuilder;
 
-	ParkingBuilderTest parkingBuilder;
+	ParkingDataBuilder parkingBuilder;
 
 	SimpleDateFormat dt;
 
@@ -73,9 +73,9 @@ public class PaymentServiceTest {
 
 		paymentService = mock(PaymentService.class);
 
-		parkingBuilder = mock(ParkingBuilderTest.class);
+		parkingBuilder = mock(ParkingDataBuilder.class);
 
-		vehicleBuilder = mock(VehicleBuilderTest.class);
+		vehicleBuilder = mock(VehicleDataBuilder.class);
 
 //		date = spy(new Date());
 
@@ -101,8 +101,8 @@ public class PaymentServiceTest {
 			parking.setVehicle(vehicle);
 
 			when(queryRepository.findVehicleParking(vehicleBuilder.LICENSE_PLATE_CAR))
-					.thenReturn(ParkingBuilderTest.aParking()
-							.withVehicle(VehicleBuilderTest.aVehicle()
+					.thenReturn(ParkingDataBuilder.aParking()
+							.withVehicle(VehicleDataBuilder.aVehicle()
 									.withLicensePlate(vehicleBuilder.LICENSE_PLATE_CAR).withVehicleType(2).build())
 							.build());
 			// ******************************+ OJO MUCHAS DUDAS EN EL MOCK PORQUE NO RETORNA
@@ -113,17 +113,17 @@ public class PaymentServiceTest {
 //			when(date).thenReturn(dt.parse("2019-02-08"));
 //			PowerMockito.whenNew(Date.class).withAnyArguments().thenReturn(new Date());
 
-//			when(dt.format(new Date())).thenReturn(ParkingBuilderTest.HOUR_CHECK_OUT);
-//			Mockito.doReturn(ParkingBuilderTest.HOUR_CHECK_OUT).when(dt).format(date);
+//			when(dt.format(new Date())).thenReturn(ParkingDataBuilder.HOUR_CHECK_OUT);
+//			Mockito.doReturn(ParkingDataBuilder.HOUR_CHECK_OUT).when(dt).format(date);
 			PowerMockito.doCallRealMethod().doReturn(57).when(paymentService)
-					.calculateTimeInside(ParkingBuilderTest.aParking().build());
-//			when(paymentService.calculateTimeInside(ParkingBuilderTest.aParking().build())).thenReturn(57);
-			// Mockito.doReturn(57).when(paymentService).calculateTimeInside(ParkingBuilderTest.aParking().build());
+					.calculateTimeInside(ParkingDataBuilder.aParking().build());
+//			when(paymentService.calculateTimeInside(ParkingDataBuilder.aParking().build())).thenReturn(57);
+			// Mockito.doReturn(57).when(paymentService).calculateTimeInside(ParkingDataBuilder.aParking().build());
 
-			when(paymentService.calculatePayment(0.0, 57, 0.0, 0.0)).thenReturn(PaymentBuilderTest.PRICE_TEST);
+			when(paymentService.calculatePayment(0.0, 57, 0.0, 0.0)).thenReturn(PaymentDataBuilder.PRICE_TEST);
 
-			when(paymentService.updateParking(ParkingBuilderTest.aParking().build(), 0.0, 12))
-					.thenReturn(PaymentBuilderTest.aPayment().withId(978678).build());
+			when(paymentService.updateParking(ParkingDataBuilder.aParking().build(), 0.0, 12))
+					.thenReturn(PaymentDataBuilder.aPayment().withId(978678).build());
 			// act
 
 			PaymentDTO paymentDTO = paymentService.savePayment(vehicleBuilder.LICENSE_PLATE_CAR);
@@ -143,10 +143,10 @@ public class PaymentServiceTest {
 		// Arrange
 
 		try {
-			Parking parking = ParkingBuilderTest.aParking().withDateCheckIn(dt.parse(ParkingBuilderTest.DATE_CHECK_IN))
-					.withHourCheckIn(ParkingBuilderTest.HOUR_CHECK_IN)
-					.withDateCheckOut(dt.parse(ParkingBuilderTest.DATE_CHECK_OUT))
-					.withHourCheckOut(ParkingBuilderTest.HOUR_CHECK_OUT).build();
+			Parking parking = ParkingDataBuilder.aParking().withDateCheckIn(dt.parse(ParkingDataBuilder.DATE_CHECK_IN))
+					.withHourCheckIn(ParkingDataBuilder.HOUR_CHECK_IN)
+					.withDateCheckOut(dt.parse(ParkingDataBuilder.DATE_CHECK_OUT))
+					.withHourCheckOut(ParkingDataBuilder.HOUR_CHECK_OUT).build();
 			
 			//act
 			
@@ -170,7 +170,7 @@ public class PaymentServiceTest {
 		
 		// Arrange
 		double price = 0;
-		int timeInside = PaymentBuilderTest.TIME_INSIDE;
+		int timeInside = PaymentDataBuilder.TIME_INSIDE;
 		double priceHour = paymentService.CAR_HOUR_PRICE;
 		double priceDay = paymentService.CAR_DAY_PRICE;
 		

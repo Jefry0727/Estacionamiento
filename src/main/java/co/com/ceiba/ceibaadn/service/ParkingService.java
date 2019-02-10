@@ -31,8 +31,6 @@ public class ParkingService implements IParkingService {
 	private static final String REGEX_TYPE_MOTORCYCLE = "^([A-Z]{3}\\d{2}[A-Z]{1})";
 
 	private static final String REGEX_TYPE_MOTORCYCLE_TWO_DIGITS = "^([A-Z]{3}\\d{2})";
-	
-	
 
 	private static final String VEHICLE_NOT_VALIDATE = "El vehículo ingrasado no es válido";
 
@@ -119,10 +117,10 @@ public class ParkingService implements IParkingService {
 			}
 
 			parking = saveParking(vehicle);
-		}else {
-			
+		} else {
+
 			throw new ParkingException(VEHICLE_NOT_ALLOWED);
-			
+
 		}
 
 		return parking;
@@ -150,10 +148,8 @@ public class ParkingService implements IParkingService {
 
 		parkingRepository.save(parking);
 
-		ParkingDTO parkingDTO = new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
+		return new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
 				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), parking.getVehicle());
-
-		return parkingDTO;
 
 	}
 
@@ -182,17 +178,14 @@ public class ParkingService implements IParkingService {
 		Matcher encaja = patron.matcher(license);
 
 		if (encaja.find()) {
-			
-			if(validateDay()) {
-				
-				return true;
-				
-			}else {
-				
-				return false;
-				
-			}
 
+			if (validateDay()) {
+
+				return true;
+
+			}
+			
+			return false;
 
 		}
 
@@ -283,7 +276,7 @@ public class ParkingService implements IParkingService {
 		return false;
 
 	}
-	
+
 	public void setCalendario(GregorianCalendar calendar) {
 		this.calendar = calendar;
 	}

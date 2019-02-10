@@ -2,7 +2,7 @@ package co.com.ceiba.ceibaadn.buildertest;
 
 import co.com.ceiba.ceibaadn.model.Vehicle;
 
-public class VehicleBuilderTest {
+public class VehicleDataBuilder {
 
 	public static final String LICENSE_PLATE_CAR = "CLC889";
 	
@@ -24,28 +24,28 @@ public class VehicleBuilderTest {
 	
 	private int vehicleType;
     
-    public VehicleBuilderTest(){
+    public VehicleDataBuilder(){
         this.licensePlate = "HNA88E";
         this.cylinder = "125";
         this.vehicleType = 0;
     }
     
-    public VehicleBuilderTest withLicensePlate(String licensePlate){
+    public VehicleDataBuilder withLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
         return this;
     }
     
-    public VehicleBuilderTest withId(int id){
+    public VehicleDataBuilder withId(int id){
         this.id = id;
         return this;
     }
     
-    public VehicleBuilderTest withCylinder(String cylinder){
+    public VehicleDataBuilder withCylinder(String cylinder){
         this.cylinder = cylinder;
         return this;
     }
     
-    public VehicleBuilderTest withVehicleType(int vehicleType){
+    public VehicleDataBuilder withVehicleType(int vehicleType){
         this.vehicleType = vehicleType;
         return this;
     }
@@ -54,7 +54,7 @@ public class VehicleBuilderTest {
         return new Vehicle(licensePlate, cylinder, vehicleType);
     }
     
-    public static VehicleBuilderTest aVehicle(){
-        return new VehicleBuilderTest();
+    public static VehicleDataBuilder aVehicle(){
+        return new VehicleDataBuilder();
     }
 }

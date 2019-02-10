@@ -4,7 +4,6 @@ import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,16 +38,15 @@ public class ParkingController {
 	}
 	
 	@PostMapping(value = "/savePayment")
-	public RestResponsePaymentDTO savePayment(@RequestBody VehicleDTO vehicleDTO) throws ParkingException, ParseException {
+	public RestResponsePaymentDTO savePayment(@RequestBody VehicleDTO vehicleDTO) throws ParkingException {
 		
-		PaymentDTO paymentDTO = iPaymentService.savePayment(vehicleDTO.getLicenseDTO());
-		
-		return new RestResponsePaymentDTO(HttpStatus.OK.toString(), paymentDTO);
-		
+			PaymentDTO paymentDTO;
+			
+			paymentDTO = iPaymentService.savePayment(vehicleDTO.getLicenseDTO());
+			
+			return new RestResponsePaymentDTO(HttpStatus.OK.toString(), paymentDTO);
+			
 	}
-	
-
-	
 	
 
 }

@@ -19,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import co.com.ceiba.ceibaadn.buildertest.VehicleBuilderTest;
+import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
@@ -55,7 +55,7 @@ public class ParkingServiceTest {
 	@InjectMocks
 	ParkingService parkingService;
 
-	VehicleBuilderTest vehicleBuilder = new VehicleBuilderTest();
+	VehicleDataBuilder vehicleBuilder = new VehicleDataBuilder();
 
 	@Before
 	public void setUp() {
@@ -91,7 +91,7 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleBuilderTest.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicensePlate());
+			assertEquals(VehicleDataBuilder.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicensePlate());
 
 		} catch (ParkingException e) {
 
@@ -121,7 +121,7 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleBuilderTest.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicensePlate());
+			assertEquals(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicensePlate());
 
 		} catch (ParkingException e) {
 
@@ -169,7 +169,7 @@ public class ParkingServiceTest {
 		try {
 		// Arrange
 		
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleBuilderTest.LICENSE_PLATE_MOTORCYCLE).build();
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE).build();
 		
 		// act 
 		
@@ -177,7 +177,7 @@ public class ParkingServiceTest {
 			
 		// assert
 			
-			Assert.assertEquals(validate, VehicleBuilderTest.TYPE_MOTORCYCLE);
+			Assert.assertEquals(validate, VehicleDataBuilder.TYPE_MOTORCYCLE);
 			
 		} catch (ParkingException e) {
 
@@ -193,7 +193,7 @@ public class ParkingServiceTest {
 		try {
 		// Arrange
 		
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleBuilderTest.LICENSE_PLATE_INVALIDATE).build();
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_INVALIDATE).build();
 		
 		// act 
 		
@@ -201,7 +201,7 @@ public class ParkingServiceTest {
 			
 		// assert
 			
-			Assert.assertEquals(validate, VehicleBuilderTest.TYPE_INVALIDATE);
+			Assert.assertEquals(validate, VehicleDataBuilder.TYPE_INVALIDATE);
 			
 		} catch (ParkingException e) {
 
@@ -216,11 +216,11 @@ public class ParkingServiceTest {
 		
 		// Arrange
 		
-		when(queryRepository.quantityVehicleByType(VehicleBuilderTest.TYPE_MOTORCYCLE)).thenReturn(9);
+		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_MOTORCYCLE)).thenReturn(9);
 		
 		// act 
 		
-		boolean validate = parkingService.validateQuantityVehicle(VehicleBuilderTest.TYPE_MOTORCYCLE);
+		boolean validate = parkingService.validateQuantityVehicle(VehicleDataBuilder.TYPE_MOTORCYCLE);
 		
 		
 		// assert
@@ -234,11 +234,11 @@ public class ParkingServiceTest {
 		
 		// Arrange
 		
-		when(queryRepository.quantityVehicleByType(VehicleBuilderTest.TYPE_MOTORCYCLE)).thenReturn(10);
+		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_MOTORCYCLE)).thenReturn(10);
 		
 		// act 
 		
-		boolean validate = parkingService.validateQuantityVehicle(VehicleBuilderTest.TYPE_MOTORCYCLE);
+		boolean validate = parkingService.validateQuantityVehicle(VehicleDataBuilder.TYPE_MOTORCYCLE);
 		
 		
 		// assert
@@ -255,7 +255,7 @@ public class ParkingServiceTest {
 		
 		// act
 		
-		boolean validate = parkingService.validateLicensePlateAndDays(VehicleBuilderTest.LICENSE_PLATE_SUNDAY_MONDEY);
+		boolean validate = parkingService.validateLicensePlateAndDays(VehicleDataBuilder.LICENSE_PLATE_SUNDAY_MONDEY);
 		
 		// assert
 		

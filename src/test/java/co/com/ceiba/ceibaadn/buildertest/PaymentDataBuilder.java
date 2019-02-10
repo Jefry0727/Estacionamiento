@@ -3,7 +3,7 @@ package co.com.ceiba.ceibaadn.buildertest;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Payment;
 
-public class PaymentBuilderTest {
+public class PaymentDataBuilder {
 
 	public static final double PRICE_TEST = 3000.0;
 	
@@ -18,23 +18,23 @@ public class PaymentBuilderTest {
 
 	private int timeInside;
 
-	public PaymentBuilderTest() {
-		this.parking = ParkingBuilderTest.aParking().withId(1).build();
+	public PaymentDataBuilder() {
+		this.parking = ParkingDataBuilder.aParking().withId(1).build();
 		this.totalPrice = 12000;
 		this.timeInside = 57;
 	}
 
-	public PaymentBuilderTest withTotalPrice(double totalPrice) {
+	public PaymentDataBuilder withTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 		return this;
 	}
 
-	public PaymentBuilderTest withId(int id) {
+	public PaymentDataBuilder withId(int id) {
 		this.id = id;
 		return this;
 	}
 
-	public PaymentBuilderTest withCylinder(int timeInside) {
+	public PaymentDataBuilder withCylinder(int timeInside) {
 		this.timeInside = timeInside;
 		return this;
 	}
@@ -43,7 +43,7 @@ public class PaymentBuilderTest {
 		return new Payment(parking, totalPrice, timeInside);
 	}
 
-	public static PaymentBuilderTest aPayment() {
-		return new PaymentBuilderTest();
+	public static PaymentDataBuilder aPayment() {
+		return new PaymentDataBuilder();
 	}
 }

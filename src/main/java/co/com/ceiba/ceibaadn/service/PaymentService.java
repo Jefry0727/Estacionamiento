@@ -36,8 +36,6 @@ public class PaymentService implements IPaymentService {
 
 	private static final String FORMAT_DATE_TIME = "YYYY-MM-DD HH:mm:ss";
 
-	
-	
 	@Autowired
 	private IPaymentRepository paymentRepository;
 
@@ -56,11 +54,9 @@ public class PaymentService implements IPaymentService {
 	}
 
 	@Override
-	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
+	public PaymentDTO savePayment(String licensePlate) throws ParkingException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
-//		System.out.println("parking.getDateCheckIn()");
-//		System.out.println(parking.getVehicle().getVehicleType());
 
 		if (parking == null) {
 
@@ -81,15 +77,16 @@ public class PaymentService implements IPaymentService {
 			parking.setState(0);
 
 			int timeInside = calculateTimeInside(parking);
-			
+
 			System.out.println("timeInside");
 			System.out.println(timeInside);
 
 			double price = 0.0;
-
-			switch (parking.getVehicle().getVehicleType()) {
-			case 1:
-
+			
+			int vehicleType = parking.getVehicle().getVehicleType();
+			
+			if(vehicleType == 1 ) {
+				
 				price = calculatePayment(0, timeInside, MOTORCYCLE_HOUR_PRICE, MOTORCYCLE_DAY_PRICE);
 
 				if (Integer.parseInt(parking.getVehicle().getCylinder()) > MAX_CYLINDER) {
@@ -97,66 +94,71 @@ public class PaymentService implements IPaymentService {
 					price += PRICE_MAX_CYLINDER;
 
 				}
-
-				break;
-
-			case 2:
-
+				
+			}else {
+				
 				price = calculatePayment(0, timeInside, CAR_HOUR_PRICE, CAR_DAY_PRICE);
-
-				break;
+				
 			}
 
 			Payment payment = updateParking(parking, price, timeInside);
-			
+
 			System.out.println("update parking");
 			System.out.println(payment.getId());
 
 			paymentRepository.save(payment);
 
-			PaymentDTO paymentDTO = new PaymentDTO(payment.getId(), payment.getParking(), payment.getTotalPrice(),
+
+			return new PaymentDTO(payment.getId(), payment.getParking(), payment.getTotalPrice(),
 					payment.getTimeInside());
-			
-			return paymentDTO;
 
 		}
 	}
-	
-	
+
 	public Payment updateParking(Parking parking, double price, int timeInside) {
-		
+
 		parkingRepository.save(parking);
 
 		return new Payment(parking, price, timeInside);
-		
-		
+
 	}
 
-	public int calculateTimeInside(Parking parking) throws ParseException {
+	public int calculateTimeInside(Parking parking) {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
+		try {
 
-		SimpleDateFormat dateFormatCheckInOut = new SimpleDateFormat(FORMAT_DATE_TIME);
+			SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
 
-		/*
-		 * fecha de entrada
-		 */
-		Date dateCheckIn = dateFormatCheckInOut
-				.parse(dateFormat.format(parking.getDateCheckIn()) + " " + parking.getHourCheckIn());
+			SimpleDateFormat dateFormatCheckInOut = new SimpleDateFormat(FORMAT_DATE_TIME);
 
-		/*
-		 * fecha de salida
-		 */
-		Date dateCheckOut = dateFormatCheckInOut
-				.parse(dateFormat.format(parking.getDateCheckOut()) + " " + parking.getHourCheckOut());
+			/*
+			 * fecha de entrada
+			 */
+			Date dateCheckIn;
 
-		int diff = (int) ((dateCheckOut.getTime() - dateCheckIn.getTime()));
+			dateCheckIn = dateFormatCheckInOut
+					.parse(dateFormat.format(parking.getDateCheckIn()) + " " + parking.getHourCheckIn());
 
-		int hours = 0;
+			/*
+			 * fecha de salida
+			 */
+			Date dateCheckOut = dateFormatCheckInOut
+					.parse(dateFormat.format(parking.getDateCheckOut()) + " " + parking.getHourCheckOut());
 
-		hours = (int) (diff / (60 * 60 * 1000));
+			int diff = (int) (dateCheckOut.getTime() - dateCheckIn.getTime());
 
-		return hours;
+			int hours = 0;
+
+			hours = (int) diff / (60 * 60 * 1000);
+
+			return hours;
+
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+
+		}
+		return 0;
 
 	}
 

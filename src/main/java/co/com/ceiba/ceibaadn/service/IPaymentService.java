@@ -8,6 +8,6 @@ import co.com.ceiba.ceibaadn.exception.ParkingException;
 public interface IPaymentService {
 	
 	
-	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException;
+	public PaymentDTO savePayment(String licensePlate) throws ParkingException;
 
 }

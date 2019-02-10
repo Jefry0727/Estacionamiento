@@ -5,6 +5,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.ceibaadn.model.Parking;
@@ -36,6 +37,8 @@ public class QueryRepository {
 			return (Parking)query.getSingleResult();
 			
 		}catch(NoResultException e) {
+			
+			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
 			
 			return null;
 		}
