@@ -1,6 +1,5 @@
 package co.com.ceiba.ceibaadn.service;
 
-import java.lang.annotation.Documented;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +31,8 @@ public class ParkingService implements IParkingService {
 	private static final String REGEX_TYPE_MOTORCYCLE = "^([A-Z]{3}\\d{2}[A-Z]{1})";
 
 	private static final String REGEX_TYPE_MOTORCYCLE_TWO_DIGITS = "^([A-Z]{3}\\d{2})";
+	
+	
 
 	private static final String VEHICLE_NOT_VALIDATE = "El vehículo ingrasado no es válido";
 

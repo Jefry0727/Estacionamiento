@@ -164,7 +164,7 @@ public class PaymentServiceTest {
 
 	}
 	
-	@SuppressWarnings("deprecation")
+
 	@Test
 	public void calculatePaymentCarTest() {
 		
@@ -182,5 +182,7 @@ public class PaymentServiceTest {
 		
 		assertEquals((Double)validte, (Double) 24000.0);
 	}
+	
+	
 
 }

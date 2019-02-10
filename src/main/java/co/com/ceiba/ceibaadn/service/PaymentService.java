@@ -36,6 +36,8 @@ public class PaymentService implements IPaymentService {
 
 	private static final String FORMAT_DATE_TIME = "YYYY-MM-DD HH:mm:ss";
 
+	
+	
 	@Autowired
 	private IPaymentRepository paymentRepository;
 
@@ -53,6 +55,7 @@ public class PaymentService implements IPaymentService {
 		this.queryRepository = queryRepository;
 	}
 
+	@Override
 	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
