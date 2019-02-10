@@ -85,7 +85,7 @@ public class PaymentServiceTest {
 	}
 
 	@Test
-	public void updateParkingTest() {
+	public void saveParkingTest() {
 		try {
 			// Arrange
 
@@ -117,8 +117,9 @@ public class PaymentServiceTest {
 //			Mockito.doReturn(ParkingDataBuilder.HOUR_CHECK_OUT).when(dt).format(date);
 			PowerMockito.doCallRealMethod().doReturn(57).when(paymentService)
 					.calculateTimeInside(ParkingDataBuilder.aParking().build());
+//			 Mockito.doReturn(57).when(paymentService).calculateTimeInside(ParkingDataBuilder.aParking().build());
 //			when(paymentService.calculateTimeInside(ParkingDataBuilder.aParking().build())).thenReturn(57);
-			// Mockito.doReturn(57).when(paymentService).calculateTimeInside(ParkingDataBuilder.aParking().build());
+			
 
 			when(paymentService.calculatePayment(0.0, 57, 0.0, 0.0)).thenReturn(PaymentDataBuilder.PRICE_TEST);
 

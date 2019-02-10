@@ -1,11 +1,21 @@
 package co.com.ceiba.ceibaadn.dto;
 
-public class RestResponsePaymentDTO {
+import java.io.Serializable;
+
+public class RestResponsePaymentDTO implements Serializable{
 	
 	private String message;
 	
 	private PaymentDTO paymentDTO;
 	
+	
+	
+	public RestResponsePaymentDTO() {
+		
+		super();
+
+	}
+
 	public RestResponsePaymentDTO(String message, PaymentDTO paymentDTO) {
 		super();
 		this.message = message;

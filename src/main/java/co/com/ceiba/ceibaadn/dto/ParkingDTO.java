@@ -102,7 +102,11 @@ public class ParkingDTO implements Serializable{
 		this.vehicleDTO = vehicleDTO;
 	}
 
-	
+	@Override
+	public String toString() {
+		
+		return "ParkinDTO: id "+ idDTO +" hourCheckInDTO "+ hourCheckInDTO;
+	}
 	
 	
 	

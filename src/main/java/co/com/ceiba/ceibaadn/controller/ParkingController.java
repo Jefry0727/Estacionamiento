@@ -3,9 +3,12 @@ package co.com.ceiba.ceibaadn.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
 import co.com.ceiba.ceibaadn.dto.PaymentDTO;
@@ -26,7 +29,13 @@ public class ParkingController {
 	
 	@Autowired
 	private IPaymentService iPaymentService;
-	
+
+	public ParkingController(IParkingService iParkingService, IPaymentService iPaymentService) {
+		super();
+		this.iParkingService = iParkingService;
+		this.iPaymentService = iPaymentService;
+	}
+
 	@PostMapping(value = "/saveParking")
 	public RestResponseParkingDTO saveParking(@RequestBody VehicleDTO vehicleDTO) throws ParkingException {
 		
