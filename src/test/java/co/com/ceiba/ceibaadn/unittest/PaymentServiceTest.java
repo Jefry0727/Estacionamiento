@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.bouncycastle.asn1.pkcs.Pfx;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,16 +21,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.ceibaadn.buildertest.ParkingDataBuilder;
 import co.com.ceiba.ceibaadn.buildertest.PaymentDataBuilder;
 import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
 import co.com.ceiba.ceibaadn.dto.PaymentDTO;
-import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
-import co.com.ceiba.ceibaadn.model.Payment;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IPaymentRepository;
