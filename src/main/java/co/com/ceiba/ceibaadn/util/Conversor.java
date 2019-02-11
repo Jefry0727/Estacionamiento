@@ -1,19 +1,19 @@
 package co.com.ceiba.ceibaadn.util;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
 import co.com.ceiba.ceibaadn.model.Parking;
 
 public class Conversor {
 
-	private ModelMapper modelMapper = new ModelMapper();
+	
 
 	/**
 	 * 
 	 * <p>
-	 * <b>Investigar mas sobre el transformar una entidad a un dto </b>
+	 * <b>Investigar mas sobre el transformar una entidad a un dto
+	 * private ModelMapper modelMapper = new ModelMapper(); </b>
 	 * </p>
 	 * <br/>
 	 * <ul>
@@ -29,10 +29,8 @@ public class Conversor {
 	 */
 	public ParkingDTO convertToDto(Parking parking) {
 
-		ParkingDTO parkingDTO = new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
+		return new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
 				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), parking.getVehicle());
-
-		return parkingDTO;
 	}
 
 }
