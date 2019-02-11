@@ -68,8 +68,6 @@ public class PaymentService implements IPaymentService {
 			SimpleDateFormat dt = new SimpleDateFormat("HH:mm:ss");
 
 			Date dateCheckOut = new Date();
-			System.out.println("dateCheckOut.getTime()");
-			System.out.println(dateCheckOut.getTime());
 
 			String checkOut = dt.format(dateCheckOut);
 
@@ -78,9 +76,6 @@ public class PaymentService implements IPaymentService {
 			parking.setState(0);
 
 			int timeInside = calculateTimeInside(parking);
-
-			System.out.println("timeInside");
-			System.out.println(timeInside);
 
 			double price;
 			
@@ -103,9 +98,6 @@ public class PaymentService implements IPaymentService {
 			}
 
 			Payment payment = updateParking(parking, price, timeInside);
-
-			System.out.println("update parking");
-			System.out.println(payment.getId());
 
 			paymentRepository.save(payment);
 
