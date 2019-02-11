@@ -208,38 +208,31 @@ public class ParkingService implements IParkingService {
 	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
 	 * @version 1.0
 	 * @param typeVehicle
-	 * @return
+	 * @return true 
 	 */
 	public boolean validateQuantityVehicle(int typeVehicle) {
 
 		int quantity = queryRepository.quantityVehicleByType(typeVehicle);
 
 		boolean returnValidate = false;
-
-		switch (typeVehicle) {
-		case 1:
-
+		
+		if(typeVehicle == 1) {
+			
 			if (quantity == Parking.MAXMOTORCYCLES) {
 
 				returnValidate = true;
 
 			}
-
-			break;
-		case 2:
-
+			
+		}else if(typeVehicle == 2) {
+			
 			if (quantity == Parking.MAXCARS) {
 
 				returnValidate = true;
 
 			}
 
-			break;
-
-		default:
-
-			returnValidate = true;
-			break;
+			
 		}
 
 		return returnValidate;
