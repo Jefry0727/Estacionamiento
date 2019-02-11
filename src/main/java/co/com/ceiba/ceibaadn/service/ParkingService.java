@@ -1,9 +1,11 @@
 package co.com.ceiba.ceibaadn.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,7 @@ import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IVehicleRepository;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
+import co.com.ceiba.ceibaadn.util.Conversor;
 
 @Service
 public class ParkingService implements IParkingService {
@@ -50,6 +53,8 @@ public class ParkingService implements IParkingService {
 	private QueryRepository queryRepository;
 
 	GregorianCalendar calendar = new GregorianCalendar();
+	
+	Conversor conversor = new Conversor();
 
 	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository,
 			QueryRepository queryRepository) {
@@ -208,7 +213,7 @@ public class ParkingService implements IParkingService {
 	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
 	 * @version 1.0
 	 * @param typeVehicle
-	 * @return true 
+	 * @return true si se ha excedido el tope en el estacinamiento
 	 */
 	public boolean validateQuantityVehicle(int typeVehicle) {
 
@@ -328,6 +333,21 @@ public class ParkingService implements IParkingService {
 
 		return 0;
 
+	}
+
+	@Override
+	public List<ParkingDTO> listParking() {
+		
+		List<Parking> listParking = queryRepository.getListParking();
+		
+		List<ParkingDTO> listParkingDTO = new ArrayList<ParkingDTO>();
+		
+		for (Parking parking : listParking) {
+			
+			listParkingDTO.add(conversor.convertToDto(parking));
+			
+		}
+		return listParkingDTO;
 	}
 
 }

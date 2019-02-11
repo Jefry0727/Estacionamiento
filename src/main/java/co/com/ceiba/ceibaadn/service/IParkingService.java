@@ -1,5 +1,7 @@
 package co.com.ceiba.ceibaadn.service;
 
+import java.util.List;
+
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
@@ -47,5 +49,18 @@ public interface IParkingService {
 	 * @return
 	 */
 	public Vehicle saveVehicle(Vehicle vehicle);
+	
+	
+	/**
+	 * 
+	 * <p><b>Obtiene el listado completo de los vehiculos parqueados </b></p><br/>
+	 * <ul><li></li></ul><br/>
+	 * @author Jefry Londoño <br/>
+	 *		   Email: jefry.londono@ceiba.com.co
+	 *		   Feb 10, 2019
+	 * @version 1.0
+	 * @return
+	 */
+	public List<ParkingDTO> listParking();
 	
 }

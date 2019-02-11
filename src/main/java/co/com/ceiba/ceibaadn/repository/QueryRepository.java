@@ -1,5 +1,7 @@
 package co.com.ceiba.ceibaadn.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -44,5 +46,16 @@ public class QueryRepository {
 		}
 		
 
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Parking> getListParking() {
+		
+		Query query = entityManager
+				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE p.state = 1");
+		
+		return (List<Parking>) query.getResultList();
+		
 	}
 }

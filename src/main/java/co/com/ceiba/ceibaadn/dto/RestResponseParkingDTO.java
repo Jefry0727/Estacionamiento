@@ -1,6 +1,7 @@
 package co.com.ceiba.ceibaadn.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RestResponseParkingDTO implements Serializable{
 	
@@ -13,6 +14,8 @@ public class RestResponseParkingDTO implements Serializable{
 	
 	private ParkingDTO parkingDTO;
 	
+	private List<ParkingDTO> list;
+	
 	
 
 	public RestResponseParkingDTO() {
@@ -24,6 +27,14 @@ public class RestResponseParkingDTO implements Serializable{
 		super();
 		this.message = message;
 		this.parkingDTO = parkingDTO;
+	}
+	
+	
+
+	public RestResponseParkingDTO(String message, List<ParkingDTO> list) {
+		super();
+		this.message = message;
+		this.list = list;
 	}
 
 	public String getMessage() {
@@ -42,6 +53,16 @@ public class RestResponseParkingDTO implements Serializable{
 		this.parkingDTO = parkingDTO;
 	} 
 	
+	
+	
+	public List<ParkingDTO> getList() {
+		return list;
+	}
+
+	public void setList(List<ParkingDTO> list) {
+		this.list = list;
+	}
+
 	@Override
 	public String toString() {
 		
