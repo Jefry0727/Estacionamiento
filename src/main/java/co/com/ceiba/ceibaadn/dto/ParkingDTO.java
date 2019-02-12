@@ -21,7 +21,7 @@ public class ParkingDTO implements Serializable{
 	
 	private int stateDTO;
 	
-	private Vehicle vehicleDTO;
+	private VehicleDTO vehicleDTO;
 
 	public ParkingDTO() {
 		
@@ -31,7 +31,7 @@ public class ParkingDTO implements Serializable{
 	
 
 	public ParkingDTO(int idDTO, String hourCheckInDTO, String hourCheckOutDTO, Date dateCheckInDTO,
-			Date dateCheckOutDTO, int stateDTO, Vehicle vehicleDTO) {
+			Date dateCheckOutDTO, int stateDTO, VehicleDTO vehicleDTO) {
 		super();
 		this.idDTO = idDTO;
 		this.hourCheckInDTO = hourCheckInDTO;
@@ -93,12 +93,12 @@ public class ParkingDTO implements Serializable{
 	}
 
 
-	public Vehicle getVehicleDTO() {
+	public VehicleDTO getVehicleDTO() {
 		return vehicleDTO;
 	}
 
 
-	public void setVehicleDTO(Vehicle vehicleDTO) {
+	public void setVehicleDTO(VehicleDTO vehicleDTO) {
 		this.vehicleDTO = vehicleDTO;
 	}
 

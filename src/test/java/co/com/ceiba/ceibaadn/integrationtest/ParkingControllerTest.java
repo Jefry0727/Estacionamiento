@@ -1,195 +1,152 @@
 package co.com.ceiba.ceibaadn.integrationtest;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 
-import org.junit.Before;
+
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+//import org.junit.runner.RunWith;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.core.env.Environment;
+//import org.springframework.test.context.junit4.SpringRunner;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.MvcResult;
+//import org.springframework.test.web.servlet.RequestBuilder;
+//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+//import org.json.JSONObject;
+//import org.springframework.http.MediaType;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.SqlDateTypeAdapter;
-
-import co.com.ceiba.ceibaadn.buildertest.ParkingDataBuilder;
-import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
-import co.com.ceiba.ceibaadn.controller.ParkingController;
-import co.com.ceiba.ceibaadn.dto.RestResponseParkingDTO;
-import co.com.ceiba.ceibaadn.dto.RestResponsePaymentDTO;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
+import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
-import co.com.ceiba.ceibaadn.service.IParkingService;
-import co.com.ceiba.ceibaadn.service.IPaymentService;
 import co.com.ceiba.ceibaadn.service.ParkingService;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureTestDatabase
-@ContextConfiguration
+@AutoConfigureMockMvc
 public class ParkingControllerTest {
 
-	private TestRestTemplate restTemplate = new TestRestTemplate();
-
-	@Mock
+	@Autowired
 	ParkingService parkingService;
+
+	@Autowired
+	private QueryRepository queryRepository;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Autowired
+	Environment env;
+
+	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNA88E";
+
+	private static final String VALIDATE_LICENSE_PLATE_CAR = "CCL884";
+
+	private static final String INVALIDATE_LICENSE_PLATE = "AC0884";
+
+	private static final String VALIDATE_LICENSE_PLATE_DAY = "ACC884";
+
+	private static final String MAX_CYLINDER = "650";
+
+	private static final String CYLINDER = "650";
+
+	private static final int VEHICLE_MOTORCYLE = 1;
+
+	private static final String URL_SAVE_PARKING = "http://localhost:8080/saveParking";
+
+	@Test
+	public void saveParkingVehicleValidateLicensePlate() throws Exception {
+		// Arrange
+
+		VehicleDTO vehicleDTO = new VehicleDTO(0, VALIDATE_LICENSE_PLATE_MOTORCYCLE, CYLINDER, VEHICLE_MOTORCYLE);
+
+		// act
+		MvcResult result = saveParking(vehicleDTO);
+
+		// Assert
+
+		assertEquals(200, result.getResponse().getStatus());
+		assertNotNull(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO()));
+
+	}
+
+	@Test
+	public void saveParkingInvalidatePlate() throws Exception {
+
+		// Arrange
+
+		VehicleDTO vehicleDTO = new VehicleDTO(0,INVALIDATE_LICENSE_PLATE , CYLINDER, VEHICLE_MOTORCYLE);
+
+		// act
+		MvcResult result = saveParking(vehicleDTO);
+
+		// Assert
+
+		assertEquals(400, result.getResponse().getStatus());
+		assertThatExceptionOfType(ParkingException.class);
+
+
+	}
 	
-	@Mock
-	QueryRepository queryRepository;
-
-	@LocalServerPort
-	private int localServerPort;
-
-	MockMvc mockMvc;
-
-	@Mock
-	private IParkingService iParkingService;
-
-	@Mock
-	private IPaymentService iPaymentService;
-
-	@InjectMocks
-	private ParkingController parkingController;
-	
-	VehicleDataBuilder vehicleBuilder;
-
-	Gson gson;
-	
-	VehicleDTO vehicleMotorcycleDTO;
-	
-	VehicleDTO vehicleCarDTO;
-	
-	VehicleDTO vehicleMotorcycleMaxCylinderDTO;
-	
-	VehicleDTO vehicleMotorcycleErrorLicense;
-
-	@Before
-	public void setUp() {
+	@Test
+	public void saveParkingVehicleParkedTest() throws Exception {
+		// Arrange
 		
-		mockMvc = MockMvcBuilders.standaloneSetup(parkingController).build();
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR , CYLINDER, VEHICLE_MOTORCYLE);
+		MvcResult result = saveParking(vehicleDTO);
 		
-		parkingController = new ParkingController(iParkingService,iPaymentService);
+		// act
 		
-		SqlDateTypeAdapter sqlAdapter = new SqlDateTypeAdapter();
-		gson = new GsonBuilder().registerTypeAdapter(java.sql.Date.class, sqlAdapter).setDateFormat("yyyy-MM-dd")
-				.create();
+		result = saveParking(vehicleDTO);
 		
-		String motorcycleDTO = "{\r\n" + 
-				"\"licenseDTO\" : \"HNA88E\",\r\n" + 
-				"\"cylinderDTO\" : \"154\",\r\n" + 
-				"\"typeVehicleDTO\" : 1\r\n" + 
-				"}";
-		
-		String carDTO = "{\r\n" + 
-				"\"licenseDTO\" : \"CLC349\",\r\n" + 
-				"\"cylinderDTO\" : \"\",\r\n" + 
-				"\"typeVehicleDTO\" : 2\r\n" + 
-				"}";
-		String motorcycleMaxCylinderDTO = "{\r\n" + 
-				"\"licenseDTO\" : \"TTX49D\",\r\n" + 
-				"\"cylinderDTO\" : \"650\",\r\n" + 
-				"\"typeVehicleDTO\" : 1\r\n" + 
-				"}";
-		
-		String motorcycleErrorLicense = "{\r\n" + 
-				"\"licenseDTO\" : \"TTX49D3\",\r\n" + 
-				"\"cylinderDTO\" : \"650\",\r\n" + 
-				"\"typeVehicleDTO\" : 1\r\n" + 
-				"}";
-		
-		vehicleMotorcycleDTO = gson.fromJson(motorcycleDTO, VehicleDTO.class);
-		
-		vehicleCarDTO = gson.fromJson(carDTO, VehicleDTO.class);
-		
-		vehicleMotorcycleMaxCylinderDTO = gson.fromJson(motorcycleMaxCylinderDTO, VehicleDTO.class);
-		
-		vehicleMotorcycleErrorLicense = gson.fromJson(motorcycleErrorLicense, VehicleDTO.class);
-
+		// assert
+		assertEquals(400, result.getResponse().getStatus());
+		assertThatExceptionOfType(ParkingException.class);
 		
 	}
 	
 	@Test
-	public void saveParkingTest() {
+	public void saveParkingDayTest() throws Exception {
 		
-		try {
-			
-			URI url = new URI("http://localhost:" + localServerPort + "/saveParking");
-			
-			RestResponseParkingDTO responseDTO = restTemplate.postForObject(url, vehicleMotorcycleDTO, RestResponseParkingDTO.class);
-//			
-			assertThat(responseDTO.getMessage(), equalTo(HttpStatus.OK.toString()));
-			
-		} catch (URISyntaxException e) {
+		// Arrange
+		
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, VEHICLE_MOTORCYLE);
+		
+		// act
+		
+		MvcResult result = saveParking(vehicleDTO);
+		
+		
+//		assertEquals(400, result.getResponse().getStatus());
+//		assertThatExceptionOfType(ParkingException.class);
+		
+		
+		
+	}
 
-			e.printStackTrace();
-		} 
-		
+	public MvcResult saveParking(VehicleDTO vehicleDTO) throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URL_SAVE_PARKING)
+				.contentType(MediaType.APPLICATION_JSON_UTF8).content(new JSONObject(vehicleDTO).toString());
+		return mockMvc.perform(requestBuilder).andReturn();
 	}
-	
-	@Test
-	public void savePaymentTest() {
-		
-		try {
-			
-		when(queryRepository.findVehicleParking("")).thenReturn(ParkingDataBuilder.aParking()
-				.withVehicle(VehicleDataBuilder.aVehicle()
-						.withLicensePlate("HNA88E").withVehicleType(1).build())
-				.build());
-		
-			URI url = new URI("http://localhost:" + localServerPort + "/savePayment");
-			
-			RestResponsePaymentDTO responseDTO = restTemplate.postForObject(url, vehicleMotorcycleDTO, RestResponsePaymentDTO.class);
-
-			assertThat(responseDTO.getMessage(), equalTo(HttpStatus.OK.toString()));
-			
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	@Test
-	public void saveParkingErrorLicenseTest() {
-		
-//		RestResponseParkingDTO responseDTO;
-		
-		try {
-			
-			URI url = new URI("http://localhost:" + localServerPort + "/saveParking");
-			
-			RestResponseParkingDTO responseDTO = restTemplate.postForObject(url, vehicleMotorcycleErrorLicense, RestResponseParkingDTO.class);
-//			fail();
-			assertNull(responseDTO.getMessage()); 
-			
-		} catch (URISyntaxException e) {
-			
-			System.out.println("entre");
-			e.printStackTrace();
-			
-		} 
-//		catch (HttpClientErrorException httpError) {
-//
-//			assertEquals(HttpStatus.OK, httpError.getStatusCode());
-//		}
-		
-	}
-	
 
 }

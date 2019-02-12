@@ -63,6 +63,15 @@ public class ParkingService implements IParkingService {
 		this.vehicleRepository = vehicleRepository;
 		this.queryRepository = queryRepository;
 	}
+	
+	
+
+	public ParkingService(QueryRepository queryRepository) {
+		super();
+		this.queryRepository = queryRepository;
+	}
+
+
 
 	public ParkingService() {
 
@@ -76,6 +85,8 @@ public class ParkingService implements IParkingService {
 		Vehicle vehicle = null;
 
 		ParkingDTO parking = null;
+		
+		object.setLicenseDTO(object.getLicenseDTO().toUpperCase());
 
 		if (queryRepository.findVehicleParking(object.getLicenseDTO()) != null) {
 
@@ -154,7 +165,7 @@ public class ParkingService implements IParkingService {
 		parkingRepository.save(parking);
 
 		return new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
-				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), parking.getVehicle());
+				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), conversor.convertToDtoVehicleDTO(parking.getVehicle()));
 
 	}
 

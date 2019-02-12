@@ -7,6 +7,15 @@ public class Car extends Vehicle{
 
 	private static final long serialVersionUID = 1L;
 
+	
+	
+	public Car() {
+		super();
+
+	}
+
+
+
 	public Car(String licensePlate, String cylinder, int vehicleType) {
 		super();
 		

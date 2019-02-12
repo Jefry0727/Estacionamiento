@@ -3,7 +3,9 @@ package co.com.ceiba.ceibaadn.util;
 import org.modelmapper.ModelMapper;
 
 import co.com.ceiba.ceibaadn.dto.ParkingDTO;
+import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.model.Parking;
+import co.com.ceiba.ceibaadn.model.Vehicle;
 
 public class Conversor {
 
@@ -30,7 +32,12 @@ public class Conversor {
 	public ParkingDTO convertToDto(Parking parking) {
 
 		return new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
-				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), parking.getVehicle());
+				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(),convertToDtoVehicleDTO(parking.getVehicle()) );
+	}
+	
+	public VehicleDTO convertToDtoVehicleDTO(Vehicle vehicle) {
+		
+		return new VehicleDTO(vehicle.getId(), vehicle.getLicensePlate(), vehicle.getCylinder(),vehicle.getVehicleType());
 	}
 
 }

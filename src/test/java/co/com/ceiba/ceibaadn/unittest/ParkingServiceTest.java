@@ -91,7 +91,7 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleDataBuilder.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicensePlate());
+			assertEquals(VehicleDataBuilder.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicenseDTO());
 
 		} catch (ParkingException e) {
 
@@ -121,7 +121,7 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicensePlate());
+			assertEquals(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicenseDTO());
 
 		} catch (ParkingException e) {
 
