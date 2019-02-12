@@ -53,7 +53,7 @@ public class ParkingService implements IParkingService {
 	private QueryRepository queryRepository;
 
 	GregorianCalendar calendar = new GregorianCalendar();
-	
+
 	Conversor conversor = new Conversor();
 
 	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository,
@@ -63,15 +63,11 @@ public class ParkingService implements IParkingService {
 		this.vehicleRepository = vehicleRepository;
 		this.queryRepository = queryRepository;
 	}
-	
-	
 
 	public ParkingService(QueryRepository queryRepository) {
 		super();
 		this.queryRepository = queryRepository;
 	}
-
-
 
 	public ParkingService() {
 
@@ -85,7 +81,7 @@ public class ParkingService implements IParkingService {
 		Vehicle vehicle = null;
 
 		ParkingDTO parking = null;
-		
+
 		object.setLicenseDTO(object.getLicenseDTO().toUpperCase());
 
 		if (queryRepository.findVehicleParking(object.getLicenseDTO()) != null) {
@@ -165,7 +161,8 @@ public class ParkingService implements IParkingService {
 		parkingRepository.save(parking);
 
 		return new ParkingDTO(parking.getId(), parking.getHourCheckIn(), parking.getHourCheckOut(),
-				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(), conversor.convertToDtoVehicleDTO(parking.getVehicle()));
+				parking.getDateCheckIn(), parking.getDateCheckOut(), parking.getState(),
+				conversor.convertToDtoVehicleDTO(parking.getVehicle()));
 
 	}
 
@@ -200,7 +197,7 @@ public class ParkingService implements IParkingService {
 				return true;
 
 			}
-			
+
 			return false;
 
 		}
@@ -231,24 +228,19 @@ public class ParkingService implements IParkingService {
 		int quantity = queryRepository.quantityVehicleByType(typeVehicle);
 
 		boolean returnValidate = false;
-		
-		if(typeVehicle == 1) {
-			
+
+		if (typeVehicle == 1) {
+
 			if (quantity == Parking.MAXMOTORCYCLES) {
 
 				returnValidate = true;
 
 			}
-			
-		}else if(typeVehicle == 2) {
-			
-			if (quantity == Parking.MAXCARS) {
 
-				returnValidate = true;
+		} else if (typeVehicle == 2 && quantity == Parking.MAXCARS) {
 
-			}
+			returnValidate = true;
 
-			
 		}
 
 		return returnValidate;
@@ -276,11 +268,9 @@ public class ParkingService implements IParkingService {
 		calendar.setTime(new Date());
 
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
-				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
 
 			return true;
-
-		}
 
 		return false;
 
@@ -312,7 +302,7 @@ public class ParkingService implements IParkingService {
 	 * @return
 	 * @throws ParkingException
 	 */
-	public int validateTypeVehicle(String licensePlate) throws ParkingException {
+	public int validateTypeVehicle(String licensePlate) {
 
 		if (licensePlate.length() >= 5 && licensePlate.length() <= 6) {
 
@@ -348,15 +338,15 @@ public class ParkingService implements IParkingService {
 
 	@Override
 	public List<ParkingDTO> listParking() {
-		
+
 		List<Parking> listParking = queryRepository.getListParking();
-		
-		List<ParkingDTO> listParkingDTO = new ArrayList<ParkingDTO>();
-		
+
+		List<ParkingDTO> listParkingDTO = new ArrayList<>();
+
 		for (Parking parking : listParking) {
-			
+
 			listParkingDTO.add(conversor.convertToDto(parking));
-			
+
 		}
 		return listParkingDTO;
 	}

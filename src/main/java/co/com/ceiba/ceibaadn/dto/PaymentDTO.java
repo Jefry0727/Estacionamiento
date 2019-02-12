@@ -4,15 +4,13 @@ package co.com.ceiba.ceibaadn.dto;
 
 import java.io.Serializable;
 
-import co.com.ceiba.ceibaadn.model.Parking;
-
 public class PaymentDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private int idDTO;
 
-	private Parking parkingDTO;
+	private ParkingDTO parkingDTO;
 
 	private double priceDTO;
 
@@ -24,7 +22,7 @@ public class PaymentDTO implements Serializable{
 
 	}
 
-	public PaymentDTO(int idDTO, Parking parkingDTO, double priceDTO, int timeInsideDTO) {
+	public PaymentDTO(int idDTO, ParkingDTO parkingDTO, double priceDTO, int timeInsideDTO) {
 		super();
 		this.idDTO = idDTO;
 		this.parkingDTO = parkingDTO;
@@ -36,7 +34,7 @@ public class PaymentDTO implements Serializable{
 		return idDTO;
 	}
 
-	public Parking getParkingDTO() {
+	public ParkingDTO getParkingDTO() {
 		return parkingDTO;
 	}
 
@@ -52,7 +50,7 @@ public class PaymentDTO implements Serializable{
 		this.idDTO = idDTO;
 	}
 
-	public void setParkingDTO(Parking parkingDTO) {
+	public void setParkingDTO(ParkingDTO parkingDTO) {
 		this.parkingDTO = parkingDTO;
 	}
 

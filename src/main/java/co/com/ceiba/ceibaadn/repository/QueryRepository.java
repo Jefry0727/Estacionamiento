@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.ceibaadn.model.Parking;
+import co.com.ceiba.ceibaadn.model.Payment;
 
 @Repository
 public class QueryRepository {
@@ -29,33 +30,50 @@ public class QueryRepository {
 	}
 
 	public Parking findVehicleParking(String licensePlate) {
-		
+
 		try {
-			
-			Query query = entityManager
-					.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = '"
+
+			Query query = entityManager.createQuery(
+					"SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = '"
 							+ licensePlate + "' AND p.state = 1");
-				
-			return (Parking)query.getSingleResult();
-			
-		}catch(NoResultException e) {
-			
+
+			return (Parking) query.getSingleResult();
+
+		} catch (NoResultException e) {
+
 			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
-			
+
 			return null;
 		}
-		
 
 	}
-	
-	
+
+	public Payment findVehiclePayment(String licensePlate) {
+
+		try {
+
+			Query query = entityManager.createQuery(
+					"SELECT py FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id join Payment py on py.parking.id = p.id WHERE v.licensePlate = '"
+							+ licensePlate + "' AND p.state = 0");
+
+			return (Payment) query.getSingleResult();
+			
+		} catch (NoResultException e) {
+
+			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
+
+			return null;
+		}
+
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Parking> getListParking() {
-		
+
 		Query query = entityManager
 				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE p.state = 1");
-		
+
 		return (List<Parking>) query.getResultList();
-		
+
 	}
 }

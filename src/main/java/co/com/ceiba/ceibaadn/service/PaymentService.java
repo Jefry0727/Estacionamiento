@@ -15,6 +15,7 @@ import co.com.ceiba.ceibaadn.model.Payment;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IPaymentRepository;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
+import co.com.ceiba.ceibaadn.util.Conversor;
 
 @Service
 public class PaymentService implements IPaymentService {
@@ -33,9 +34,9 @@ public class PaymentService implements IPaymentService {
 
 	private static final String VEHICLE_NOT_PARKING = "El vehículo no se encuentra estacionado";
 
-	private static final String FORMAT_DATE = "YYYY-MM-DD";
+	private static final String FORMAT_DATE = "yyyy-MM-dd";
 
-	private static final String FORMAT_DATE_TIME = "YYYY-MM-DD HH:mm:ss";
+	private static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 
 	@Autowired
 	private IPaymentRepository paymentRepository;
@@ -45,6 +46,8 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	private QueryRepository queryRepository;
+	
+	Conversor conversor = new Conversor();
 
 	public PaymentService(IPaymentRepository paymentRepository, IParkingRepository parkingRepository,
 			QueryRepository queryRepository) {
@@ -101,8 +104,8 @@ public class PaymentService implements IPaymentService {
 
 			paymentRepository.save(payment);
 
-
-			return new PaymentDTO(payment.getId(), payment.getParking(), payment.getTotalPrice(),
+			
+			return new PaymentDTO(payment.getId(), conversor.convertToDto(payment.getParking()), payment.getTotalPrice(),
 					payment.getTimeInside());
 
 		}
@@ -128,7 +131,7 @@ public class PaymentService implements IPaymentService {
 			 * fecha de entrada
 			 */
 			Date dateCheckIn;
-
+			
 			dateCheckIn = dateFormatCheckInOut
 					.parse(dateFormat.format(parking.getDateCheckIn()) + " " + parking.getHourCheckIn());
 
@@ -139,10 +142,17 @@ public class PaymentService implements IPaymentService {
 					.parse(dateFormat.format(parking.getDateCheckOut()) + " " + parking.getHourCheckOut());
 
 			int diff = (int) (dateCheckOut.getTime() - dateCheckIn.getTime());
+	
+		    int minutes = (diff / (1000 * 60)) % 60;
+		    
+		    int hours = diff / (60 * 60 * 1000);
+		    
+		    if(minutes > 0) {
+		    	
+		    	hours++;
+		    }
 
-			int hours = 0;
-
-			hours = diff / (60 * 60 * 1000);
+			
 
 			return hours;
 
@@ -162,6 +172,7 @@ public class PaymentService implements IPaymentService {
 			if (timeInside == 0) {
 
 				price += priceHour;
+				
 
 			} else {
 

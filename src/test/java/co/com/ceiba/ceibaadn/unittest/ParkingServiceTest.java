@@ -67,8 +67,6 @@ public class ParkingServiceTest {
 		parkingService = spy(new ParkingService(parkingRepository, vehicleRepository, queryRepository));
 	}
 
-
-
 	@Test
 	public void sevaParkingCarNotExistsTest() {
 
@@ -152,115 +150,97 @@ public class ParkingServiceTest {
 		// Arrange
 		GregorianCalendar calendar = Mockito.mock(GregorianCalendar.class);
 		Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
-		
-		//act
+
+		// act
 		parkingService.setCalendario(calendar);
-		
+
 		boolean valiate = parkingService.validateDay();
-		
+
 		// assert
-		
+
 		assertTrue(valiate);
 	}
-	
+
 	@Test
 	public void validateTypeVehicleMotorcycleTest() {
-		
-		try {
-		// Arrange
-		
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE).build();
-		
-		// act 
-		
-			int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
-			
-		// assert
-			
-			Assert.assertEquals(validate, VehicleDataBuilder.TYPE_MOTORCYCLE);
-			
-		} catch (ParkingException e) {
 
-			e.printStackTrace();
-		}
-		
-		
+		// Arrange
+
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE).build();
+
+		// act
+
+		int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
+
+		// assert
+
+		Assert.assertEquals(validate, VehicleDataBuilder.TYPE_MOTORCYCLE);
+
 	}
-	
+
 	@Test
 	public void validateTypeVehicleInvalidateTest() {
-		
-		try {
-		// Arrange
-		
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_INVALIDATE).build();
-		
-		// act 
-		
-			int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
-			
-		// assert
-			
-			Assert.assertEquals(validate, VehicleDataBuilder.TYPE_INVALIDATE);
-			
-		} catch (ParkingException e) {
 
-			e.printStackTrace();
-		}
-		
-		
+		// Arrange
+
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_INVALIDATE).build();
+
+		// act
+
+		int validate = parkingService.validateTypeVehicle(vehicle.getLicensePlate());
+
+		// assert
+
+		Assert.assertEquals(validate, VehicleDataBuilder.TYPE_INVALIDATE);
+
 	}
-	
+
 	@Test
 	public void validateQuantityVehicleMotorcycleTest() {
-		
+
 		// Arrange
-		
+
 		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_MOTORCYCLE)).thenReturn(9);
-		
-		// act 
-		
+
+		// act
+
 		boolean validate = parkingService.validateQuantityVehicle(VehicleDataBuilder.TYPE_MOTORCYCLE);
-		
-		
+
 		// assert
-		
+
 		assertFalse(validate);
 	}
-	
-	
+
 	@Test
 	public void validateQuantityVehicleMotorcycleMaxTest() {
-		
+
 		// Arrange
-		
+
 		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_MOTORCYCLE)).thenReturn(10);
-		
-		// act 
-		
+
+		// act
+
 		boolean validate = parkingService.validateQuantityVehicle(VehicleDataBuilder.TYPE_MOTORCYCLE);
-		
-		
+
 		// assert
-		
+
 		assertTrue(validate);
 	}
-	
+
 	@Test
 	public void validateLicensePlateAndDaysTest() {
-		
-		
+
 		// Arrange
 		Mockito.doReturn(true).when(parkingService).validateDay();
-		
+
 		// act
-		
+
 		boolean validate = parkingService.validateLicensePlateAndDays(VehicleDataBuilder.LICENSE_PLATE_SUNDAY_MONDEY);
-		
+
 		// assert
-		
+
 		assertTrue(validate);
-		
+
 	}
 
 }
