@@ -64,10 +64,6 @@ public class ParkingService implements IParkingService {
 		this.queryRepository = queryRepository;
 	}
 
-	public ParkingService(QueryRepository queryRepository) {
-		super();
-		this.queryRepository = queryRepository;
-	}
 
 	public ParkingService() {
 
