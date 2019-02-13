@@ -141,12 +141,13 @@ public class PaymentServiceTest {
 
 		Vehicle vehicle = spy(new Vehicle());
 		vehicle.setVehicleType(1);
-		vehicle.setCylinder("650");
 		parking.setVehicle(vehicle);
 		
+		SimpleDateFormat dts = new SimpleDateFormat("HH:mm:ss");
+		
 		when(queryRepository.findVehicleParking(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE))
-		.thenReturn(ParkingDataBuilder.aParking().withDateCheckIn(new Date()).withDateCheckOut(new Date())
-				.withVehicle(VehicleDataBuilder.aVehicle()
+		.thenReturn(ParkingDataBuilder.aParking().withDateCheckIn(new Date()).withDateCheckOut(new Date()).withHourCheckIn(dts.format(new Date())).withHourCheckOut(dts.format(new Date()))
+				.withVehicle(VehicleDataBuilder.aVehicle().withCylinder("650")
 						.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_CAR).withVehicleType(1).build())
 				.build());
 		
