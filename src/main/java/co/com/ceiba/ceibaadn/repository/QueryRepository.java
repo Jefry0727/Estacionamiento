@@ -19,8 +19,6 @@ public class QueryRepository {
 
 	@PersistenceContext
 	public EntityManager entityManager;
-	
-	private static final String VEHICLE_NOT_FOUND_IN_PAYMENT = "El vehiculo no tiene pagos registrados";
 
 	public int quantityVehicleByType(int typeVehicle) {
 
@@ -51,7 +49,7 @@ public class QueryRepository {
 
 	}
 
-	public Payment findVehiclePayment(String licensePlate) throws ParkingException {
+	public Payment findVehiclePayment(String licensePlate) {
 
 		try {
 
@@ -62,10 +60,12 @@ public class QueryRepository {
 			return (Payment) query.getSingleResult();
 			
 		} catch (NoResultException e) {
+			
+			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
+			
+			throw e;
 
-			throw new ParkingException(VEHICLE_NOT_FOUND_IN_PAYMENT);
-
-
+		
 		}
 
 	}
