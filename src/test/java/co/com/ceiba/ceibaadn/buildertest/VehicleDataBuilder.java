@@ -14,6 +14,8 @@ public class VehicleDataBuilder {
 	
 	public static final int TYPE_MOTORCYCLE = 1;
 	
+	public static final int TYPE_CAR = 2;
+	
 	public static final int TYPE_INVALIDATE = 0;
 	
 	private int id;

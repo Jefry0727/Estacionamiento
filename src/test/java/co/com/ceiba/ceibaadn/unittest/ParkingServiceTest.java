@@ -216,6 +216,22 @@ public class ParkingServiceTest {
 
 		// Arrange
 
+		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_CAR)).thenReturn(20);
+
+		// act
+
+		boolean validate = parkingService.validateQuantityVehicle(VehicleDataBuilder.TYPE_CAR);
+
+		// assert
+
+		assertTrue(validate);
+	}
+	
+	@Test
+	public void validateQuantityVehicleCarMaxTest() {
+
+		// Arrange
+
 		when(queryRepository.quantityVehicleByType(VehicleDataBuilder.TYPE_MOTORCYCLE)).thenReturn(10);
 
 		// act
