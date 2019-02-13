@@ -2,14 +2,9 @@ package co.com.ceiba.ceibaadn.repository;
 
 import java.util.List;
 
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.jboss.logging.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.ceibaadn.model.Parking;
@@ -20,8 +15,6 @@ public class QueryRepository {
 
 	@PersistenceContext
 	public EntityManager entityManager;
-	
-	private static final Logger LOGGER = LoggerFactory.logger(NoResultException.class);
 
 	public int quantityVehicleByType(int typeVehicle) {
 
@@ -35,40 +28,35 @@ public class QueryRepository {
 
 	public Parking findVehicleParking(String licensePlate) {
 
-		try {
+		Query query = entityManager
+				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = '"
+						+ licensePlate + "' AND p.state = 1");
 
-			Query query = entityManager.createQuery(
-					"SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = '"
-							+ licensePlate + "' AND p.state = 1");
+		List<?> result = query.getResultList();
 
-			return (Parking) query.getSingleResult();
+		if (!result.isEmpty()) {
 
-		} catch (NoResultException e) {
-			LOGGER.info(e.getMessage());
+			return (Parking) result.get(0);
 		}
-		
+
 		return null;
 
 	}
 
 	public Payment findVehiclePayment(String licensePlate) {
 
-		try {
+		Query query = entityManager.createQuery(
+				"SELECT py FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id join Payment py on py.parking.id = p.id WHERE v.licensePlate = '"
+						+ licensePlate + "' AND p.state = 0");
 
-			Query query = entityManager.createQuery(
-					"SELECT py FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id join Payment py on py.parking.id = p.id WHERE v.licensePlate = '"
-							+ licensePlate + "' AND p.state = 0");
+		List<?> result = query.getResultList();
 
-			return (Payment) query.getSingleResult();
-			
-		} catch (NoResultException e) {
-			
-			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
-			
-			throw e;
+		if (!result.isEmpty()) {
 
-		
+			return (Payment) result.get(0);
 		}
+
+		return null;
 
 	}
 
