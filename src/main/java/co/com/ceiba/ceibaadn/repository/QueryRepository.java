@@ -2,12 +2,14 @@ package co.com.ceiba.ceibaadn.repository;
 
 import java.util.List;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.logging.log4j.LogManager;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import co.com.ceiba.ceibaadn.model.Parking;
@@ -18,6 +20,8 @@ public class QueryRepository {
 
 	@PersistenceContext
 	public EntityManager entityManager;
+	
+	private static org.jboss.logging.Logger LOGGER = LoggerFactory.logger(NoResultException.class);
 
 	public int quantityVehicleByType(int typeVehicle) {
 
@@ -41,8 +45,7 @@ public class QueryRepository {
 
 		} catch (NoResultException e) {
 
-			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
-			
+			LOGGER.info(e.getMessage());
 		}
 		
 		return null;
