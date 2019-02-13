@@ -183,7 +183,7 @@ public class ParkingServiceTest {
 			// assert
 
 		} catch (ParkingException e) {
-
+			System.out.println(e.getMessage());
 			assertThatExceptionOfType(ParkingException.class);
 
 		}

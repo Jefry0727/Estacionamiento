@@ -162,29 +162,29 @@ public class PaymentServiceTest {
 
 	}
 	
-	@Test
-	public void calculateTimeInsideInvalidateTest() {
-		// Arrange
-
-		try {
-			Parking parking = ParkingDataBuilder.aParking().withDateCheckIn(dt.parse(ParkingDataBuilder.DATE_CHECK_IN))
-					.withHourCheckIn(ParkingDataBuilder.HOUR_CHECK_IN)
-					.withDateCheckOut(dt.parse(ParkingDataBuilder.DATE_CHECK_OUT_IVALIDATE))
-					.withHourCheckOut(ParkingDataBuilder.HOUR_CHECK_OUT).build();
-			
-			//act
-			
-			int calculate = paymentService.calculateTimeInside(parking);
-			
-			// assert
-			
-		} catch (ParseException e) {
-
-			assertThatExceptionOfType(ParseException.class);
-
-		}
-
-	}
+//	@Test
+//	public void calculateTimeInsideInvalidateTest() {
+//		// Arrange
+//
+//		try {
+//			Parking parking = ParkingDataBuilder.aParking().withDateCheckIn(dt.parse(ParkingDataBuilder.DATE_CHECK_IN))
+//					.withHourCheckIn(ParkingDataBuilder.HOUR_CHECK_IN)
+//					.withDateCheckOut(dt.parse(ParkingDataBuilder.DATE_CHECK_OUT_IVALIDATE))
+//					.withHourCheckOut(ParkingDataBuilder.HOUR_CHECK_OUT).build();
+//			
+//			//act
+//			
+//			int calculate = paymentService.calculateTimeInside(parking);
+//			
+//			// assert
+//			
+//		} catch (ParseException e) {
+//
+//			assertThatExceptionOfType(ParseException.class);
+//
+//		}
+//
+//	}
 	
 
 	@Test
