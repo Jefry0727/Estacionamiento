@@ -65,6 +65,8 @@ public class ParkingControllerTest {
 
 	private static final int VEHICLE_MOTORCYLE = 1;
 	
+	private static final int INVALIDATE_TYPE_VEHICLE = 0;
+	
 	private static final int VEHICLE_CAR = 2;
 
 	private static final String URL_SAVE_PARKING = "http://localhost:8080/saveParking";
@@ -130,6 +132,23 @@ public class ParkingControllerTest {
 		// Arrange
 		
 		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, VEHICLE_MOTORCYLE);
+		
+		// act
+		
+		MvcResult result = saveParking(vehicleDTO);
+		
+		
+		assertEquals(400, result.getResponse().getStatus());
+
+		
+	}
+	
+	@Test
+	public void saveParkingInvalidateType() throws Exception {
+		
+		// Arrange
+		
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, INVALIDATE_TYPE_VEHICLE);
 		
 		// act
 		
