@@ -1,8 +1,10 @@
 package co.com.ceiba.ceibaadn.controller;
 
 
+import java.text.ParseException;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,12 +52,20 @@ public class ParkingController {
 	
 	@PostMapping(value = "/savePayment")
 	public RestResponsePaymentDTO savePayment(@RequestBody VehicleDTO vehicleDTO) throws ParkingException {
-		
+		try {
 			PaymentDTO paymentDTO;
 			
-			paymentDTO = iPaymentService.savePayment(vehicleDTO.getLicenseDTO());
+			
+				paymentDTO = iPaymentService.savePayment(vehicleDTO.getLicenseDTO());
+			
 			
 			return new RestResponsePaymentDTO(HttpStatus.OK.toString(), paymentDTO);
+			
+			} catch (ParseException e) {
+
+				LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
+			}
+		return null;
 			
 	}
 	

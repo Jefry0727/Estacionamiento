@@ -41,7 +41,7 @@ public class ParkingService implements IParkingService {
 
 	private static final String VEHICLE_PARKED = "El vehículo ya esta en el estacionamiento";
 
-	private static final String VEHICLE_NOT_ALLOWED = "El vehículo no se puede ingresar al estacionamiento";
+	private static final String VEHICLE_NOT_ALLOWED = "El vehículo no se puede ingresar al estacionamiento, No es un día HÁBIL.";
 
 	@Autowired
 	private IParkingRepository parkingRepository;
