@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 
-import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Payment;
 

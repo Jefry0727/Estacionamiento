@@ -64,7 +64,6 @@ public class ParkingService implements IParkingService {
 		this.queryRepository = queryRepository;
 	}
 
-
 	public ParkingService() {
 
 		super();
@@ -185,12 +184,14 @@ public class ParkingService implements IParkingService {
 		Pattern patron = Pattern.compile(PATTERN);
 
 		Matcher encaja = patron.matcher(license);
+		
+		boolean validate = true;
 
 		if (encaja.find()) {
 
 			if (validateDay()) {
 
-				return true;
+				return validate;
 
 			}
 
@@ -198,7 +199,7 @@ public class ParkingService implements IParkingService {
 
 		}
 
-		return true;
+		return validate;
 	}
 
 	/**
@@ -263,12 +264,15 @@ public class ParkingService implements IParkingService {
 
 		calendar.setTime(new Date());
 
+		boolean validate = false;
+
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
-				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
+				|| calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
 
-			return true;
+			validate = true;
+		}
 
-		return false;
+		return validate;
 
 	}
 
