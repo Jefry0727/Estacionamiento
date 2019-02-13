@@ -42,9 +42,10 @@ public class QueryRepository {
 		} catch (NoResultException e) {
 
 			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
-
-			return null;
+			
 		}
+		
+		return null;
 
 	}
 
