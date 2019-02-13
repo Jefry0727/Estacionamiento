@@ -58,7 +58,7 @@ public class PaymentService implements IPaymentService {
 	}
 
 	@Override
-	public PaymentDTO savePayment(String licensePlate) throws ParkingException, ParseException {
+	public PaymentDTO savePayment(String licensePlate) throws ParkingException {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
 
@@ -119,7 +119,7 @@ public class PaymentService implements IPaymentService {
 
 	}
 
-	public int calculateTimeInside(Parking parking) throws ParseException {
+	public int calculateTimeInside(Parking parking) {
 
 		try {
 
@@ -159,12 +159,9 @@ public class PaymentService implements IPaymentService {
 		} catch (ParseException e) {
 
 			LogManager.getLogger(this.getClass()).info("ParseException, " + e.getMessage());
-			
-			throw e;
-//			return 0;
 
 		}
-		
+		return 0;
 
 	}
 
