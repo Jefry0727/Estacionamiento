@@ -136,7 +136,7 @@ public class ParkingServiceTest {
 		try {
 			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
 
-			Vehicle vehicle = vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
+			vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
 			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
@@ -147,7 +147,37 @@ public class ParkingServiceTest {
 
 
 			// act
-			ParkingDTO parkingDTO = parkingService.saveParkinIn(vehicleDTO);
+			parkingService.saveParkinIn(vehicleDTO);
+
+			
+			// assert
+
+		} catch (ParkingException e) {
+
+			assertThatExceptionOfType(ParkingException.class);
+
+		}
+	}
+	
+	@Test
+	public void sevaParkingValidateQuantityNotAvailabilityTest() {
+
+		// Arrange
+		try {
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+
+			vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
+
+			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
+			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
+
+			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(0);
+			Mockito.doReturn(true).when(parkingService).validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO());
+
+
+			// act
+			parkingService.saveParkinIn(vehicleDTO);
 
 			
 			// assert
