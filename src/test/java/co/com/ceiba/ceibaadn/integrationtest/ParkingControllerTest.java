@@ -70,6 +70,8 @@ public class ParkingControllerTest {
 	private static final String URL_SAVE_PARKING = "http://localhost:8080/saveParking";
 	
 	private static final String URL_SAVE_PAYMENT = "http://localhost:8080/savePayment";
+	
+	private static final String URL_LIST_PARKING = "http://localhost:8080/listParking";
 
 	@Test
 	public void saveParkingVehicleValidateLicensePlate() throws Exception {
@@ -189,6 +191,20 @@ public class ParkingControllerTest {
 		
 	}
 	
+	@Test
+	public void listParkingTest() throws Exception {
+		
+		// Arrange
+		
+		// act
+		MvcResult result = listParking();
+
+		// assert
+		assertEquals(200, result.getResponse().getStatus());
+	
+		
+	}
+	
 	
 	
 
@@ -201,6 +217,12 @@ public class ParkingControllerTest {
 	public MvcResult savePayment(VehicleDTO vehicleDTO) throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URL_SAVE_PAYMENT)
 				.contentType(MediaType.APPLICATION_JSON_UTF8).content(new JSONObject(vehicleDTO).toString());
+		return mockMvc.perform(requestBuilder).andReturn();
+	}
+	
+	public MvcResult listParking() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URL_LIST_PARKING)
+				.contentType(MediaType.APPLICATION_JSON_UTF8).content(new JSONObject().toString());
 		return mockMvc.perform(requestBuilder).andReturn();
 	}
 
