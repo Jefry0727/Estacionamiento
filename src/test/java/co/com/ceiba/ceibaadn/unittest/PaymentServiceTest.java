@@ -1,5 +1,6 @@
 package co.com.ceiba.ceibaadn.unittest;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -27,6 +28,7 @@ import co.com.ceiba.ceibaadn.buildertest.ParkingDataBuilder;
 import co.com.ceiba.ceibaadn.buildertest.PaymentDataBuilder;
 import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
 import co.com.ceiba.ceibaadn.dto.PaymentDTO;
+import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
@@ -126,11 +128,11 @@ public class PaymentServiceTest {
 			PaymentDTO paymentDTO = paymentService.savePayment(vehicleBuilder.LICENSE_PLATE_CAR);
 
 			// assert
-			System.out.println(paymentDTO.getPriceDTO());
+
 			assertNotNull(paymentDTO);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -155,8 +157,31 @@ public class PaymentServiceTest {
 			
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+
+	}
+	
+	@Test
+	public void calculateTimeInsideInvalidateTest() {
+		// Arrange
+
+		try {
+			Parking parking = ParkingDataBuilder.aParking().withDateCheckIn(dt.parse(ParkingDataBuilder.DATE_CHECK_IN))
+					.withHourCheckIn(ParkingDataBuilder.HOUR_CHECK_IN)
+					.withDateCheckOut(dt.parse(ParkingDataBuilder.DATE_CHECK_OUT_IVALIDATE))
+					.withHourCheckOut(ParkingDataBuilder.HOUR_CHECK_OUT).build();
+			
+			//act
+			
+			int calculate = paymentService.calculateTimeInside(parking);
+			
+			// assert
+			
+		} catch (ParseException e) {
+
+			assertThatExceptionOfType(ParseException.class);
+
 		}
 
 	}

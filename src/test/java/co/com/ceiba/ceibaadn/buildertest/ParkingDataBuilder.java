@@ -32,6 +32,8 @@ public class ParkingDataBuilder {
     public static final String DATE_CHECK_IN = "2019-02-08"; 
     
     public static final String DATE_CHECK_OUT = "2019-02-08"; 
+    
+    public static final String DATE_CHECK_OUT_IVALIDATE = "2019/02/08"; 
 
     public ParkingDataBuilder() {
 
