@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,6 +52,8 @@ public class ParkingControllerTest {
 
 	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNA88E";
 	
+	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 = "HNE88E";
+	
 	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER = "HNA88A";
 
 	private static final String VALIDATE_LICENSE_PLATE_CAR = "CCL884";
@@ -68,12 +71,24 @@ public class ParkingControllerTest {
 	private static final int INVALIDATE_TYPE_VEHICLE = 0;
 	
 	private static final int VEHICLE_CAR = 2;
+	
+	private static final int AUX_QUANTITY = 8;
 
 	private static final String URL_SAVE_PARKING = "http://localhost:8080/saveParking";
 	
 	private static final String URL_SAVE_PAYMENT = "http://localhost:8080/savePayment";
 	
 	private static final String URL_LIST_PARKING = "http://localhost:8080/listParking";
+	
+	@Before
+	public void setUp() throws Exception {
+		
+		for (int i = 0; i < AUX_QUANTITY; i++) {
+			
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "TTX4"+i, CYLINDER, VEHICLE_MOTORCYLE);
+			saveParking(vehicleDTO);
+		}
+	}
 
 	@Test
 	public void saveParkingVehicleValidateLicensePlate() throws Exception {
@@ -90,6 +105,7 @@ public class ParkingControllerTest {
 		assertNotNull(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO()));
 
 	}
+	
 
 	@Test
 	public void saveParkingInvalidatePlate() throws Exception {
@@ -131,7 +147,7 @@ public class ParkingControllerTest {
 		
 		// Arrange
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, VEHICLE_CAR);
 		
 		// act
 		
@@ -148,7 +164,7 @@ public class ParkingControllerTest {
 		
 		// Arrange
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, INVALIDATE_TYPE_VEHICLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,INVALIDATE_LICENSE_PLATE , CYLINDER, INVALIDATE_TYPE_VEHICLE);
 		
 		// act
 		
@@ -192,7 +208,7 @@ public class ParkingControllerTest {
 		assertEquals(400, result.getResponse().getStatus());
 	}
 	
-	@SuppressWarnings("deprecation")
+
 	@Test
 	public void savePaymentMaxCylinder() throws Exception {
 		
@@ -209,6 +225,23 @@ public class ParkingControllerTest {
 		assertEquals((int)(queryRepository.findVehiclePayment(vehicleDTO.getLicenseDTO())).getTotalPrice(), 2500);
 		
 	}
+	
+	@Test
+	public void saveParking() throws Exception {
+		
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		
+		saveParking(vehicleDTO);
+		
+		vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		
+		MvcResult result = saveParking(vehicleDTO);
+		
+		System.out.println(result.getResponse().getContentAsString());
+		assertEquals(400, result.getResponse().getStatus());
+		
+	}
+	
 	
 	@Test
 	public void listParkingTest() throws Exception {
