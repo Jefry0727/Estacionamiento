@@ -23,7 +23,7 @@ public class ParkingDataBuilder {
 
     private int state;
 
-    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD");
+    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
     
     public static final String HOUR_CHECK_OUT = "13:00:00"; 
     
@@ -33,7 +33,6 @@ public class ParkingDataBuilder {
     
     public static final String DATE_CHECK_OUT = "2019-02-08"; 
     
-//    public static final String DATE_CHECK_OUT_IVALIDATE = "2019/02/08"; 
 
     public ParkingDataBuilder() {
 

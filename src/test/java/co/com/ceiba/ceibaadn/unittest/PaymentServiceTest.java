@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +63,6 @@ public class PaymentServiceTest {
 
 	SimpleDateFormat dt;
 
-//	final Date date;
 
 	@Before
 	public void setUp() {
@@ -83,14 +83,9 @@ public class PaymentServiceTest {
 	}
 
 	@Test
-	public void saveParkingTest() {
+	public void savePaymentTest() {
 		try {
 			// Arrange
-
-			// paymentService = spy(new PaymentService(paymentRepository, parkingRepository,
-			// queryRepository));
-
-			Date date = Mockito.mock(Date.class);
 
 			Parking parking = spy(new Parking());
 
@@ -98,10 +93,10 @@ public class PaymentServiceTest {
 			vehicle.setVehicleType(1);
 			parking.setVehicle(vehicle);
 
-			when(queryRepository.findVehicleParking(vehicleBuilder.LICENSE_PLATE_CAR))
+			when(queryRepository.findVehicleParking(VehicleDataBuilder.LICENSE_PLATE_CAR))
 					.thenReturn(ParkingDataBuilder.aParking()
 							.withVehicle(VehicleDataBuilder.aVehicle()
-									.withLicensePlate(vehicleBuilder.LICENSE_PLATE_CAR).withVehicleType(2).build())
+									.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_CAR).withVehicleType(2).build())
 							.build());
 			// ******************************+ OJO MUCHAS DUDAS EN EL MOCK PORQUE NO RETORNA
 			// EL VALOR DADO
@@ -125,16 +120,45 @@ public class PaymentServiceTest {
 					.thenReturn(PaymentDataBuilder.aPayment().withId(978678).build());
 			// act
 
-			PaymentDTO paymentDTO = paymentService.savePayment(vehicleBuilder.LICENSE_PLATE_CAR);
+			PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.LICENSE_PLATE_CAR);
 
 			// assert
 
 			assertNotNull(paymentDTO);
 
 		} catch (Exception e) {
-
-			e.printStackTrace();
+			
+			LogManager.getLogger(this.getClass()).info("ERROR: BAD_REQUEST, " + e.getMessage());
+	
 		}
+	}
+	
+	@Test
+	public void savePaymentMotorcycleMaxCylinderTest() throws ParkingException {
+		// Arrange
+
+		Parking parking = spy(new Parking());
+
+		Vehicle vehicle = spy(new Vehicle());
+		vehicle.setVehicleType(1);
+		vehicle.setCylinder("650");
+		parking.setVehicle(vehicle);
+		
+		when(queryRepository.findVehicleParking(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE))
+		.thenReturn(ParkingDataBuilder.aParking().withDateCheckIn(new Date()).withDateCheckOut(new Date())
+				.withVehicle(VehicleDataBuilder.aVehicle()
+						.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_CAR).withVehicleType(1).build())
+				.build());
+		
+		// act
+
+		PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE);
+		
+		
+		
+		assertEquals((int)paymentDTO.getPriceDTO(), 2500);
+		
+
 	}
 
 	@Test
@@ -157,34 +181,12 @@ public class PaymentServiceTest {
 			
 			
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LogManager.getLogger(this.getClass()).info("ERROR: BAD_REQUEST, " + e.getMessage());
 		}
 
 	}
 	
-//	@Test
-//	public void calculateTimeInsideInvalidateTest() {
-//		// Arrange
-//
-//		try {
-//			Parking parking = ParkingDataBuilder.aParking().withDateCheckIn(dt.parse(ParkingDataBuilder.DATE_CHECK_IN))
-//					.withHourCheckIn(ParkingDataBuilder.HOUR_CHECK_IN)
-//					.withDateCheckOut(dt.parse(ParkingDataBuilder.DATE_CHECK_OUT_IVALIDATE))
-//					.withHourCheckOut(ParkingDataBuilder.HOUR_CHECK_OUT).build();
-//			
-//			//act
-//			
-//			int calculate = paymentService.calculateTimeInside(parking);
-//			
-//			// assert
-//			
-//		} catch (ParseException e) {
-//
-//			assertThatExceptionOfType(ParseException.class);
-//
-//		}
-//
-//	}
+	
 	
 
 	@Test
@@ -192,13 +194,11 @@ public class PaymentServiceTest {
 		
 		// Arrange
 		double price = 0;
-		int timeInside = PaymentDataBuilder.TIME_INSIDE;
-		double priceHour = paymentService.CAR_HOUR_PRICE;
-		double priceDay = paymentService.CAR_DAY_PRICE;
+
 		
 		// act
 		
-		double validte = paymentService.calculatePayment(price, timeInside, priceHour, priceDay);
+		double validte = paymentService.calculatePayment(price, PaymentDataBuilder.TIME_INSIDE,  PaymentService.CAR_HOUR_PRICE, PaymentService.CAR_DAY_PRICE);
 		
 		// assert
 		
