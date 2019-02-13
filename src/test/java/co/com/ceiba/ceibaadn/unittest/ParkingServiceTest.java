@@ -40,7 +40,6 @@ import org.mockito.MockitoAnnotations;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 @ContextConfiguration
 public class ParkingServiceTest {
 

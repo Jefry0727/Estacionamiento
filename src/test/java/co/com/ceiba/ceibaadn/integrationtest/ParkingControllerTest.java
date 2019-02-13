@@ -50,13 +50,17 @@ public class ParkingControllerTest {
 	@Autowired
 	Environment env;
 
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNA88E";
+	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNF88E";
 	
 	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 = "HNE88E";
 	
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER = "HNA88A";
+	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_3 = "HGE88E";
+	
+	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER = "DDT88A";
 
 	private static final String VALIDATE_LICENSE_PLATE_CAR = "CCL884";
+	
+	private static final String VALIDATE_LICENSE_PLATE_CAR_2 = "CCK884";
 
 	private static final String INVALIDATE_LICENSE_PLATE = "AC0884";
 
@@ -197,7 +201,7 @@ public class ParkingControllerTest {
 	public void savePaymentVehicleNotFoundTest() throws Exception {
 		
 		// Arrange
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR , CYLINDER, VEHICLE_CAR);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR_2 , CYLINDER, VEHICLE_CAR);
 		 
 		
 		// act
@@ -221,6 +225,7 @@ public class ParkingControllerTest {
 		MvcResult result = savePayment(vehicleDTO);
 
 		// assert
+		
 		assertEquals(200, result.getResponse().getStatus());
 		assertEquals((int)(queryRepository.findVehiclePayment(vehicleDTO.getLicenseDTO())).getTotalPrice(), 2500);
 		
@@ -229,15 +234,16 @@ public class ParkingControllerTest {
 	@Test
 	public void saveParking() throws Exception {
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_3 , MAX_CYLINDER, VEHICLE_MOTORCYLE);
 		
 		saveParking(vehicleDTO);
+
 		
 		vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 , MAX_CYLINDER, VEHICLE_MOTORCYLE);
 		
 		MvcResult result = saveParking(vehicleDTO);
 		
-		System.out.println(result.getResponse().getContentAsString());
+
 		assertEquals(400, result.getResponse().getStatus());
 		
 	}

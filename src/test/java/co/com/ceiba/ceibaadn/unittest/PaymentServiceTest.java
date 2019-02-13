@@ -41,7 +41,6 @@ import co.com.ceiba.ceibaadn.service.PaymentService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 @ContextConfiguration
 public class PaymentServiceTest {
 
