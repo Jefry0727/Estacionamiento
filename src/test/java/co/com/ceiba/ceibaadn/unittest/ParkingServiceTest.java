@@ -1,5 +1,6 @@
 package co.com.ceiba.ceibaadn.unittest;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -124,6 +125,37 @@ public class ParkingServiceTest {
 		} catch (ParkingException e) {
 
 			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
+	public void sevaParkingInvalidateTypeVehicleTest() {
+
+		// Arrange
+		try {
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+
+			Vehicle vehicle = vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
+
+			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
+			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
+
+			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(0);
+			Mockito.doReturn(false).when(parkingService).validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO());
+
+
+			// act
+			ParkingDTO parkingDTO = parkingService.saveParkinIn(vehicleDTO);
+
+			
+			// assert
+
+		} catch (ParkingException e) {
+
+			assertThatExceptionOfType(ParkingException.class);
+
 		}
 	}
 
