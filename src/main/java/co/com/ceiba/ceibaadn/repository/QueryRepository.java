@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 
+import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Payment;
 
@@ -18,6 +19,8 @@ public class QueryRepository {
 
 	@PersistenceContext
 	public EntityManager entityManager;
+	
+	private static final String VEHICLE_NOT_FOUND_IN_PAYMENT = "El vehiculo no tiene pagos registrados";
 
 	public int quantityVehicleByType(int typeVehicle) {
 
@@ -48,7 +51,7 @@ public class QueryRepository {
 
 	}
 
-	public Payment findVehiclePayment(String licensePlate) {
+	public Payment findVehiclePayment(String licensePlate) throws ParkingException {
 
 		try {
 
@@ -60,9 +63,9 @@ public class QueryRepository {
 			
 		} catch (NoResultException e) {
 
-			LogManager.getLogger(this.getClass()).info("Exception: " + e.getMessage());
+			throw new ParkingException(VEHICLE_NOT_FOUND_IN_PAYMENT);
 
-			return null;
+
 		}
 
 	}
