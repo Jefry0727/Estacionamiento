@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+import org.jboss.logging.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ public class QueryRepository {
 	@PersistenceContext
 	public EntityManager entityManager;
 	
-	private static org.jboss.logging.Logger LOGGER = LoggerFactory.logger(NoResultException.class);
+	private static final Logger LOGGER = LoggerFactory.logger(NoResultException.class);
 
 	public int quantityVehicleByType(int typeVehicle) {
 
@@ -44,7 +44,6 @@ public class QueryRepository {
 			return (Parking) query.getSingleResult();
 
 		} catch (NoResultException e) {
-
 			LOGGER.info(e.getMessage());
 		}
 		
