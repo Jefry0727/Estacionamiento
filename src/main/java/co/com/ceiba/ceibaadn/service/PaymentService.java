@@ -159,9 +159,11 @@ public class PaymentService implements IPaymentService {
 		} catch (ParseException e) {
 
 			LogManager.getLogger(this.getClass()).info("ParseException, " + e.getMessage());
+			
+			return 0;
 
 		}
-		return 0;
+		
 
 	}
 
