@@ -22,7 +22,7 @@ import co.com.ceiba.ceibaadn.model.Vehicle;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IVehicleRepository;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
-import co.com.ceiba.ceibaadn.util.Conversor;
+import co.com.ceiba.ceibaadn.util.TransformerDTO;
 
 @Service
 public class ParkingService implements IParkingService {
@@ -54,7 +54,7 @@ public class ParkingService implements IParkingService {
 
 	GregorianCalendar calendar = new GregorianCalendar();
 
-	Conversor conversor = new Conversor();
+	TransformerDTO conversor = new TransformerDTO();
 
 	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository,
 			QueryRepository queryRepository) {
@@ -85,7 +85,7 @@ public class ParkingService implements IParkingService {
 
 		}
 
-		if (validateLicensePlateAndDays(object.getLicenseDTO())) {
+		if (validateLicensePlateAndBusinessDays(object.getLicenseDTO())) {
 
 			vehicle = vehicleRepository.findVehicleByLicense(object.getLicenseDTO());
 
@@ -161,25 +161,8 @@ public class ParkingService implements IParkingService {
 
 	}
 
-	/**
-	 * 
-	 * <p>
-	 * <b> Valida si la placa inicia en la letra A, solo se pueda registra los lunes
-	 * y domingos</b>
-	 * </p>
-	 * <br/>
-	 * <ul>
-	 * <li></li>
-	 * </ul>
-	 * <br/>
-	 * 
-	 * @author Jefry Londoño <br/>
-	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
-	 * @version 1.0
-	 * @param license
-	 * @return
-	 */
-	public boolean validateLicensePlateAndDays(String license) {
+	
+	public boolean validateLicensePlateAndBusinessDays(String license) {
 
 		Pattern patron = Pattern.compile(PATTERN);
 
@@ -189,7 +172,7 @@ public class ParkingService implements IParkingService {
 
 		if (encaja.find()) {
 
-			if (validateDay()) {
+			if (validateBusinessDay()) {
 
 				return validate;
 
@@ -202,24 +185,7 @@ public class ParkingService implements IParkingService {
 		return validate;
 	}
 
-	/**
-	 * 
-	 * <p>
-	 * <b>Valida que la cantidad de vehiculos tanto carro como moto no se pase del
-	 * tope </b>
-	 * </p>
-	 * <br/>
-	 * <ul>
-	 * <li></li>
-	 * </ul>
-	 * <br/>
-	 * 
-	 * @author Jefry Londoño <br/>
-	 *         Email: jefry.londono@ceiba.com.co Feb 7, 2019
-	 * @version 1.0
-	 * @param typeVehicle
-	 * @return true si se ha excedido el tope en el estacinamiento
-	 */
+	
 	public boolean validateQuantityVehicle(int typeVehicle) {
 
 		int quantity = queryRepository.quantityVehicleByType(typeVehicle);
@@ -260,7 +226,7 @@ public class ParkingService implements IParkingService {
 	 * @version 1.0
 	 * @return
 	 */
-	public boolean validateDay() {
+	public boolean validateBusinessDay() {
 
 		calendar.setTime(new Date());
 

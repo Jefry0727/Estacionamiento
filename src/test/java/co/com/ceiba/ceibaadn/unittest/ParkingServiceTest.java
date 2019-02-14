@@ -69,16 +69,16 @@ public class ParkingServiceTest {
 	}
 
 	@Test
-	public void sevaParkingCarNotExistsTest() {
+	public void sevaParkingCarNotExistsTest() throws ParkingException {
 
 		// Arrange
-		try {
-			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+		
+			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR, "", 0);
 
-			Vehicle vehicle = vehicleBuilder.withLicensePlate("CLC889").withVehicleType(2).build();
+			Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(2).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
-			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(parkingService.validateLicensePlateAndBusinessDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
 			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
 
 			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(2);
@@ -90,12 +90,9 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleDataBuilder.LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicenseDTO());
+			assertEquals(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR, parkingDTO.getVehicleDTO().getLicenseDTO());
 
-		} catch (ParkingException e) {
-
-			e.printStackTrace();
-		}
+		
 	}
 
 	@Test
@@ -103,12 +100,12 @@ public class ParkingServiceTest {
 
 		// Arrange
 		try {
-			VehicleDTO vehicleDTO = new VehicleDTO(0, "HNA88E", "", 0);
+			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE, "", 0);
 
-			Vehicle vehicle = vehicleBuilder.withLicensePlate("HNA88E").withVehicleType(1).build();
+			Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE).withVehicleType(1).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
-			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(parkingService.validateLicensePlateAndBusinessDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
 			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
 
 			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(1);
@@ -120,7 +117,7 @@ public class ParkingServiceTest {
 
 			// assert
 
-			assertEquals(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicenseDTO());
+			assertEquals(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicenseDTO());
 
 		} catch (ParkingException e) {
 
@@ -134,12 +131,12 @@ public class ParkingServiceTest {
 
 		// Arrange
 		try {
-			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR, "", 0);
 
-			vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
+			vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(VehicleDataBuilder.INVALIDATE_TYPE_VEHICLE).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
-			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(parkingService.validateLicensePlateAndBusinessDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
 			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
 
 			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(0);
@@ -164,12 +161,12 @@ public class ParkingServiceTest {
 
 		// Arrange
 		try {
-			VehicleDTO vehicleDTO = new VehicleDTO(0, "CLC889", "", 0);
+			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR, "", 0);
 
-			vehicleBuilder.withLicensePlate("CLC889").withVehicleType(VehicleDataBuilder.TYPE_INVALIDATE).build();
+			vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(VehicleDataBuilder.INVALIDATE_TYPE_VEHICLE).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
-			when(parkingService.validateLicensePlateAndDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
+			when(parkingService.validateLicensePlateAndBusinessDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
 			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
 
 			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(0);
@@ -183,7 +180,7 @@ public class ParkingServiceTest {
 			// assert
 
 		} catch (ParkingException e) {
-			System.out.println(e.getMessage());
+
 			assertThatExceptionOfType(ParkingException.class);
 
 		}
@@ -207,7 +204,7 @@ public class ParkingServiceTest {
 	}
 
 	@Test
-	public void validateDayTest() {
+	public void validateBusinessDayTest() {
 
 		// Arrange
 		GregorianCalendar calendar = Mockito.mock(GregorianCalendar.class);
@@ -216,7 +213,7 @@ public class ParkingServiceTest {
 		// act
 		parkingService.setCalendario(calendar);
 
-		boolean valiate = parkingService.validateDay();
+		boolean valiate = parkingService.validateBusinessDay();
 
 		// assert
 
@@ -228,7 +225,7 @@ public class ParkingServiceTest {
 
 		// Arrange
 
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE).build();
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE).build();
 
 		// act
 
@@ -245,7 +242,7 @@ public class ParkingServiceTest {
 
 		// Arrange
 
-		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_INVALIDATE).build();
+		Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.INVALIDATE_LICENSE_PLATE).build();
 
 		// act
 
@@ -253,7 +250,7 @@ public class ParkingServiceTest {
 
 		// assert
 
-		Assert.assertEquals(validate, VehicleDataBuilder.TYPE_INVALIDATE);
+		Assert.assertEquals(validate, VehicleDataBuilder.INVALIDATE_TYPE_VEHICLE);
 
 	}
 
@@ -306,14 +303,14 @@ public class ParkingServiceTest {
 	}
 
 	@Test
-	public void validateLicensePlateAndDaysTest() {
+	public void validateLicensePlateAndBusinessDaysTest() {
 
 		// Arrange
-		Mockito.doReturn(true).when(parkingService).validateDay();
+		Mockito.doReturn(true).when(parkingService).validateBusinessDay();
 
 		// act
 
-		boolean validate = parkingService.validateLicensePlateAndDays(VehicleDataBuilder.LICENSE_PLATE_SUNDAY_MONDEY);
+		boolean validate = parkingService.validateLicensePlateAndBusinessDays(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_BUSINESS_DAY);
 
 		// assert
 

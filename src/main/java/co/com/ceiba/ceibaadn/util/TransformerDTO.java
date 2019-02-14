@@ -7,7 +7,7 @@ import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 
-public class Conversor {
+public class TransformerDTO {
 
 	
 

@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import co.com.ceiba.ceibaadn.buildertest.VehicleDataBuilder;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.repository.IPaymentRepository;
@@ -49,32 +50,6 @@ public class ParkingControllerTest {
 
 	@Autowired
 	Environment env;
-
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNF88E";
-	
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 = "HNE88E";
-	
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_3 = "HGE88E";
-	
-	private static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER = "DDT88A";
-
-	private static final String VALIDATE_LICENSE_PLATE_CAR = "CCL884";
-	
-	private static final String VALIDATE_LICENSE_PLATE_CAR_2 = "CCK884";
-
-	private static final String INVALIDATE_LICENSE_PLATE = "AC0884";
-
-	private static final String VALIDATE_LICENSE_PLATE_DAY = "ACC884";
-
-	private static final String MAX_CYLINDER = "650";
-
-	private static final String CYLINDER = "150";
-
-	private static final int VEHICLE_MOTORCYLE = 1;
-	
-	private static final int INVALIDATE_TYPE_VEHICLE = 0;
-	
-	private static final int VEHICLE_CAR = 2;
 	
 	private static final int AUX_QUANTITY = 8;
 
@@ -89,7 +64,7 @@ public class ParkingControllerTest {
 		
 		for (int i = 0; i < AUX_QUANTITY; i++) {
 			
-			VehicleDTO vehicleDTO = new VehicleDTO(0, "TTX4"+i, CYLINDER, VEHICLE_MOTORCYLE);
+			VehicleDTO vehicleDTO = new VehicleDTO(0, "TTX4"+i, VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 			saveParking(vehicleDTO);
 		}
 	}
@@ -98,7 +73,7 @@ public class ParkingControllerTest {
 	public void saveParkingVehicleValidateLicensePlate() throws Exception {
 		// Arrange
 
-		VehicleDTO vehicleDTO = new VehicleDTO(0, VALIDATE_LICENSE_PLATE_MOTORCYCLE, CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE, VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 
 		// act
 		MvcResult result = saveParking(vehicleDTO);
@@ -116,7 +91,7 @@ public class ParkingControllerTest {
 
 		// Arrange
 
-		VehicleDTO vehicleDTO = new VehicleDTO(0,INVALIDATE_LICENSE_PLATE , CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.INVALIDATE_LICENSE_PLATE , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 
 		// act
 		MvcResult result = saveParking(vehicleDTO);
@@ -133,7 +108,7 @@ public class ParkingControllerTest {
 	public void saveParkingVehicleParkedTest() throws Exception {
 		// Arrange
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR , CYLINDER, VEHICLE_CAR);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR_2 , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_CAR);
 		saveParking(vehicleDTO);
 		
 		// act
@@ -151,7 +126,7 @@ public class ParkingControllerTest {
 		
 		// Arrange
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_DAY , CYLINDER, VEHICLE_CAR);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_BUSINESS_DAY , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_CAR);
 		
 		// act
 		
@@ -168,7 +143,7 @@ public class ParkingControllerTest {
 		
 		// Arrange
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,INVALIDATE_LICENSE_PLATE , CYLINDER, INVALIDATE_TYPE_VEHICLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.INVALIDATE_LICENSE_PLATE , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.INVALIDATE_TYPE_VEHICLE);
 		
 		// act
 		
@@ -184,7 +159,7 @@ public class ParkingControllerTest {
 	public void savePaymentTest() throws Exception {
 		
 		// Arrange
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR , CYLINDER, VEHICLE_CAR);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR_2 , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_CAR);
 		
 		saveParking(vehicleDTO);
 		
@@ -201,7 +176,7 @@ public class ParkingControllerTest {
 	public void savePaymentVehicleNotFoundTest() throws Exception {
 		
 		// Arrange
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_CAR_2 , CYLINDER, VEHICLE_CAR);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR_3 , VehicleDataBuilder.CYLINDER, VehicleDataBuilder.TYPE_CAR);
 		 
 		
 		// act
@@ -217,7 +192,7 @@ public class ParkingControllerTest {
 	public void savePaymentMaxCylinder() throws Exception {
 		
 		// Arrange
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE_MAX_CYLINDER , VehicleDataBuilder.MAX_CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 		
 		saveParking(vehicleDTO);
 		
@@ -234,12 +209,12 @@ public class ParkingControllerTest {
 	@Test
 	public void saveParking() throws Exception {
 		
-		VehicleDTO vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_3 , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		VehicleDTO vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE_3 , VehicleDataBuilder.MAX_CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 		
 		saveParking(vehicleDTO);
 
 		
-		vehicleDTO = new VehicleDTO(0,VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 , MAX_CYLINDER, VEHICLE_MOTORCYLE);
+		vehicleDTO = new VehicleDTO(0,VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE_2 , VehicleDataBuilder.MAX_CYLINDER, VehicleDataBuilder.TYPE_MOTORCYCLE);
 		
 		MvcResult result = saveParking(vehicleDTO);
 		

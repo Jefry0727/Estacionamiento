@@ -1,6 +1,5 @@
 package co.com.ceiba.ceibaadn.unittest;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -17,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -93,10 +91,10 @@ public class PaymentServiceTest {
 			vehicle.setVehicleType(1);
 			parking.setVehicle(vehicle);
 
-			when(queryRepository.findVehicleParking(VehicleDataBuilder.LICENSE_PLATE_CAR))
+			when(queryRepository.findVehicleParking(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR))
 					.thenReturn(ParkingDataBuilder.aParking()
 							.withVehicle(VehicleDataBuilder.aVehicle()
-									.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_CAR).withVehicleType(2).build())
+									.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(2).build())
 							.build());
 			// ******************************+ OJO MUCHAS DUDAS EN EL MOCK PORQUE NO RETORNA
 			// EL VALOR DADO
@@ -120,7 +118,7 @@ public class PaymentServiceTest {
 					.thenReturn(PaymentDataBuilder.aPayment().withId(978678).build());
 			// act
 
-			PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.LICENSE_PLATE_CAR);
+			PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR);
 
 			// assert
 
@@ -145,15 +143,15 @@ public class PaymentServiceTest {
 		
 		SimpleDateFormat dts = new SimpleDateFormat("HH:mm:ss");
 		
-		when(queryRepository.findVehicleParking(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE))
+		when(queryRepository.findVehicleParking(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE))
 		.thenReturn(ParkingDataBuilder.aParking().withDateCheckIn(new Date()).withDateCheckOut(new Date()).withHourCheckIn(dts.format(new Date())).withHourCheckOut(dts.format(new Date()))
 				.withVehicle(VehicleDataBuilder.aVehicle().withCylinder("650")
-						.withLicensePlate(VehicleDataBuilder.LICENSE_PLATE_CAR).withVehicleType(1).build())
+						.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(1).build())
 				.build());
 		
 		// act
 
-		PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.LICENSE_PLATE_MOTORCYCLE);
+		PaymentDTO paymentDTO = paymentService.savePayment(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE);
 		
 		
 		

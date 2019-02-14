@@ -15,20 +15,20 @@ import co.com.ceiba.ceibaadn.model.Payment;
 import co.com.ceiba.ceibaadn.repository.IParkingRepository;
 import co.com.ceiba.ceibaadn.repository.IPaymentRepository;
 import co.com.ceiba.ceibaadn.repository.QueryRepository;
-import co.com.ceiba.ceibaadn.util.Conversor;
+import co.com.ceiba.ceibaadn.util.TransformerDTO;
 
 @Service
 public class PaymentService implements IPaymentService {
 
 	public static final double CAR_HOUR_PRICE = 1000;
+	
+	public static final double CAR_DAY_PRICE = 8000.0;
+	
+	private static final int MAX_CYLINDER = 500;
 
 	private static final double MOTORCYCLE_HOUR_PRICE = 500.0;
 
-	public static final double CAR_DAY_PRICE = 8000.0;
-
 	private static final double MOTORCYCLE_DAY_PRICE = 4000.0;
-
-	private static final int MAX_CYLINDER = 500;
 
 	private static final double PRICE_MAX_CYLINDER = 2000.0;
 
@@ -47,7 +47,7 @@ public class PaymentService implements IPaymentService {
 	@Autowired
 	private QueryRepository queryRepository;
 	
-	Conversor conversor = new Conversor();
+	TransformerDTO conversor = new TransformerDTO();
 
 	public PaymentService(IPaymentRepository paymentRepository, IParkingRepository parkingRepository,
 			QueryRepository queryRepository) {

@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+
 import co.com.ceiba.ceibaadn.model.Parking;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 
@@ -39,16 +41,16 @@ public class ParkingDataBuilder {
         try {
 
             this.vehicle = VehicleDataBuilder.aVehicle().withId(1).build();
-            this.hourCheckIn = "10:00:00";
-            this.hourCheckOut = "13:00:00";
+            this.hourCheckIn = HOUR_CHECK_IN;
+            this.hourCheckOut = HOUR_CHECK_OUT;
 
-            this.dateCheckIn = dt.parse("2019-02-08");
-            this.dateCheckOut = dt.parse("2019-02-08");
+            this.dateCheckIn = dt.parse(DATE_CHECK_IN);
+            this.dateCheckOut = dt.parse(DATE_CHECK_OUT);
             this.state = 1;
 
         } catch (ParseException e) {
 
-            e.printStackTrace();
+        	LogManager.getLogger(this.getClass()).info("ERROR: BAD_REQUEST, " + e.getMessage());
         }
     }
 
