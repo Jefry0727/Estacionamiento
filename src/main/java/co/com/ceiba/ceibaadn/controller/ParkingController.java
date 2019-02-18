@@ -16,7 +16,6 @@ import co.com.ceiba.ceibaadn.dto.PaymentDTO;
 import co.com.ceiba.ceibaadn.dto.RestResponseParkingDTO;
 import co.com.ceiba.ceibaadn.dto.RestResponsePaymentDTO;
 import co.com.ceiba.ceibaadn.dto.VehicleDTO;
-import co.com.ceiba.ceibaadn.exception.ParkingException;
 import co.com.ceiba.ceibaadn.service.IParkingService;
 import co.com.ceiba.ceibaadn.service.IPaymentService;
 
