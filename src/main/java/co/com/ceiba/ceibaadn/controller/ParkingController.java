@@ -40,7 +40,7 @@ public class ParkingController {
 	}
 
 	@PostMapping(value = "/saveParking")
-	public RestResponseParkingDTO saveParking(@RequestBody VehicleDTO vehicleDTO) throws ParkingException {
+	public RestResponseParkingDTO saveParking(@RequestBody VehicleDTO vehicleDTO) {
 		
 		ParkingDTO parkingDTO = iParkingService.saveParkinIn(vehicleDTO);
 		
@@ -50,7 +50,7 @@ public class ParkingController {
 	}
 	
 	@PostMapping(value = "/savePayment")
-	public RestResponsePaymentDTO savePayment(@RequestBody VehicleDTO vehicleDTO) throws ParkingException {
+	public RestResponsePaymentDTO savePayment(@RequestBody VehicleDTO vehicleDTO)  {
 		
 			PaymentDTO paymentDTO;
 			
