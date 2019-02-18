@@ -23,14 +23,13 @@ public class ParkingDTO implements Serializable{
 
 	public ParkingDTO() {
 		
-		super();
 		
 	}
 	
 
 	public ParkingDTO(int idDTO, String hourCheckInDTO, String hourCheckOutDTO, Date dateCheckInDTO,
 			Date dateCheckOutDTO, int stateDTO, VehicleDTO vehicleDTO) {
-		super();
+
 		this.idDTO = idDTO;
 		this.hourCheckInDTO = hourCheckInDTO;
 		this.hourCheckOutDTO = hourCheckOutDTO;

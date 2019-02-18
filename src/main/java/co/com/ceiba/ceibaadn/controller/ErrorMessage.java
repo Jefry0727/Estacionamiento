@@ -13,9 +13,10 @@ public class ErrorMessage {
 	}
 
 	public ErrorMessage(String error, String description) {
-		super();
+		
 		this.error = error;
 		this.description = description;
+		
 	}
 
 	public String getError() {

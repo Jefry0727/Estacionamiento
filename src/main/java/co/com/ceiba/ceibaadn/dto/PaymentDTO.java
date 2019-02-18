@@ -18,12 +18,12 @@ public class PaymentDTO implements Serializable{
 
 	public PaymentDTO() {
 		
-		super();
+
 
 	}
 
 	public PaymentDTO(int idDTO, ParkingDTO parkingDTO, double priceDTO, int timeInsideDTO) {
-		super();
+
 		this.idDTO = idDTO;
 		this.parkingDTO = parkingDTO;
 		this.priceDTO = priceDTO;

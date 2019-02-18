@@ -132,7 +132,7 @@ public class PaymentServiceTest {
 	}
 	
 	@Test
-	public void savePaymentMotorcycleMaxCylinderTest() throws ParkingException {
+	public void savePaymentMotorcycleMaxCylinderTest(){
 		// Arrange
 
 		Parking parking = spy(new Parking());

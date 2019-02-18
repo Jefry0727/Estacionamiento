@@ -33,7 +33,7 @@ public class Vehicle implements Serializable{
 	
 	
 	public Vehicle(String licensePlate, String cylinder, int vehicleType) {
-		super();
+
 		this.licensePlate = licensePlate;
 		this.cylinder = cylinder;
 		this.vehicleType = vehicleType;
@@ -41,7 +41,7 @@ public class Vehicle implements Serializable{
 
 
 	public Vehicle() {
-		super();
+	
 
 	}
 

@@ -69,7 +69,7 @@ public class ParkingServiceTest {
 	}
 
 	@Test
-	public void sevaParkingCarNotExistsTest() throws ParkingException {
+	public void sevaParkingCarNotExistsTest() {
 
 		// Arrange
 		
@@ -99,7 +99,7 @@ public class ParkingServiceTest {
 	public void sevaParkingMotorcycleNotExistsTest() {
 
 		// Arrange
-		try {
+		
 			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE, "", 0);
 
 			Vehicle vehicle = vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE).withVehicleType(1).build();
@@ -119,10 +119,7 @@ public class ParkingServiceTest {
 
 			assertEquals(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_MOTORCYCLE, parkingDTO.getVehicleDTO().getLicenseDTO());
 
-		} catch (ParkingException e) {
-
-			e.printStackTrace();
-		}
+		
 	}
 	
 	
@@ -151,6 +148,7 @@ public class ParkingServiceTest {
 
 		} catch (ParkingException e) {
 
+			assertEquals(e.getMessage(), VehicleDataBuilder.VEHICLE_NOT_VALIDATE);
 			assertThatExceptionOfType(ParkingException.class);
 
 		}
@@ -158,24 +156,26 @@ public class ParkingServiceTest {
 	
 	@Test
 	public void sevaParkingValidateQuantityNotAvailabilityTest() {
-
+	
 		// Arrange
 		try {
 			VehicleDTO vehicleDTO = new VehicleDTO(0, VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR, "", 0);
 
-			vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(VehicleDataBuilder.INVALIDATE_TYPE_VEHICLE).build();
+			vehicleBuilder.withLicensePlate(VehicleDataBuilder.VALIDATE_LICENSE_PLATE_CAR).withVehicleType(VehicleDataBuilder.TYPE_CAR).build();
 
 			when(queryRepository.findVehicleParking(vehicleDTO.getLicenseDTO())).thenReturn(null);
 			when(parkingService.validateLicensePlateAndBusinessDays(vehicleDTO.getLicenseDTO())).thenReturn(true);
 			when(vehicleRepository.findVehicleByLicense(vehicleDTO.getLicenseDTO())).thenReturn(null);
 
-			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(0);
+			when(parkingService.validateTypeVehicle(vehicleDTO.getLicenseDTO())).thenReturn(VehicleDataBuilder.TYPE_CAR);
 			Mockito.doReturn(true).when(parkingService).validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO());
-
-
+//			Mockito.when(parkingService.validateQuantityVehicle(vehicleDTO.getTypeVehicleDTO())).thenReturn(true);
+			Mockito.when(queryRepository.quantityVehicleByType(vehicleDTO.getTypeVehicleDTO())).thenReturn(20);
+			
+			
 			// act
-			parkingService.saveParkinIn(vehicleDTO);
-
+			ParkingDTO v = parkingService.saveParkinIn(vehicleDTO);
+			System.out.println(v.getHourCheckInDTO());
 			
 			// assert
 

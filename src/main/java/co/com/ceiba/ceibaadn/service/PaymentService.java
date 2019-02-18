@@ -51,14 +51,14 @@ public class PaymentService implements IPaymentService {
 
 	public PaymentService(IPaymentRepository paymentRepository, IParkingRepository parkingRepository,
 			QueryRepository queryRepository) {
-		super();
+
 		this.paymentRepository = paymentRepository;
 		this.parkingRepository = parkingRepository;
 		this.queryRepository = queryRepository;
 	}
 
 	@Override
-	public PaymentDTO savePayment(String licensePlate) throws ParkingException {
+	public PaymentDTO savePayment(String licensePlate) {
 
 		Parking parking = queryRepository.findVehicleParking(licensePlate);
 

@@ -58,7 +58,7 @@ public class ParkingService implements IParkingService {
 
 	public ParkingService(IParkingRepository parkingRepository, IVehicleRepository vehicleRepository,
 			QueryRepository queryRepository) {
-		super();
+	
 		this.parkingRepository = parkingRepository;
 		this.vehicleRepository = vehicleRepository;
 		this.queryRepository = queryRepository;
@@ -66,12 +66,11 @@ public class ParkingService implements IParkingService {
 
 	public ParkingService() {
 
-		super();
 
 	}
 
 	@Override
-	public ParkingDTO saveParkinIn(VehicleDTO object) throws ParkingException {
+	public ParkingDTO saveParkinIn(VehicleDTO object) {
 
 		Vehicle vehicle = null;
 
@@ -93,7 +92,7 @@ public class ParkingService implements IParkingService {
 
 				int validateTypeVehicle = validateTypeVehicle(object.getLicenseDTO());
 
-				boolean validateQuantity = validateQuantityVehicle(validateTypeVehicle);
+				boolean validateQuantity = validateQuantityVehicle(validateTypeVehicle);	
 
 				if (validateTypeVehicle == 0) {
 
@@ -194,13 +193,13 @@ public class ParkingService implements IParkingService {
 
 		if (typeVehicle == 1) {
 
-			if (quantity == Parking.MAXMOTORCYCLES) {
+			if (quantity >= Parking.MAXMOTORCYCLES) {
 
 				returnValidate = true;
 
 			}
 
-		} else if (typeVehicle == 2 && quantity == Parking.MAXCARS) {
+		} else if (typeVehicle == 2 && quantity >= Parking.MAXCARS) {
 
 			returnValidate = true;
 

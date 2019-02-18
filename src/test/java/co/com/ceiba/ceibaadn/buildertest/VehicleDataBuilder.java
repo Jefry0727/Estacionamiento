@@ -1,9 +1,20 @@
 package co.com.ceiba.ceibaadn.buildertest;
 
+import co.com.ceiba.ceibaadn.dto.VehicleDTO;
 import co.com.ceiba.ceibaadn.model.Vehicle;
 
 public class VehicleDataBuilder {
+	
+	public static final String VEHICLE_NOT_VALIDATE = "El vehículo ingrasado no es válido";
+	
+	public static final String NOT_AVAILABILITY_VEHICLE = "No hay disponibilidad de cupo para el Vehículo";
 
+	public static final String VEHICLE_PARKED = "El vehículo ya esta en el estacionamiento";
+
+	public static final String VEHICLE_NOT_ALLOWED = "El vehículo no se puede ingresar al estacionamiento, No es un día HÁBIL.";
+	
+	public static final String VEHICLE_NOT_PARKING = "El vehículo no se encuentra estacionado";
+	
 	public static final String VALIDATE_LICENSE_PLATE_CAR = "CLC889";
 	
 	public static final String VALIDATE_LICENSE_PLATE_MOTORCYCLE = "HNA88E";
@@ -68,6 +79,11 @@ public class VehicleDataBuilder {
     
     public Vehicle build(){
         return new Vehicle(licensePlate, cylinder, vehicleType);
+    }
+    
+    public VehicleDTO buildDTO() {
+    	
+    	return new VehicleDTO(licensePlate, cylinder, vehicleType);
     }
     
     public static VehicleDataBuilder aVehicle(){

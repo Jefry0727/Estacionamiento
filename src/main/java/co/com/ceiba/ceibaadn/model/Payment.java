@@ -34,14 +34,14 @@ public class Payment implements Serializable{
 	private int timeInside;
 
 	public Payment() {
-		super();
+
 		
 	}
 	
 	
 
 	public Payment(Parking parking, double totalPrice, int timeInside) {
-		super();
+
 		this.parking = parking;
 		this.totalPrice = totalPrice;
 		this.timeInside = timeInside;

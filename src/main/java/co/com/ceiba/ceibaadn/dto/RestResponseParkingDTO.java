@@ -19,12 +19,12 @@ public class RestResponseParkingDTO implements Serializable{
 	
 
 	public RestResponseParkingDTO() {
-		super();
+
 
 	}
 
 	public RestResponseParkingDTO(String message, ParkingDTO parkingDTO) {
-		super();
+
 		this.message = message;
 		this.parkingDTO = parkingDTO;
 	}

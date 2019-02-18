@@ -33,9 +33,10 @@ public class ParkingController {
 	private IPaymentService iPaymentService;
 
 	public ParkingController(IParkingService iParkingService, IPaymentService iPaymentService) {
-		super();
+
 		this.iParkingService = iParkingService;
 		this.iPaymentService = iPaymentService;
+		
 	}
 
 	@PostMapping(value = "/saveParking")

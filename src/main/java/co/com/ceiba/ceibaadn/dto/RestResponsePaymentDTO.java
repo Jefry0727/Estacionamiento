@@ -14,12 +14,12 @@ public class RestResponsePaymentDTO implements Serializable{
 	
 	public RestResponsePaymentDTO() {
 		
-		super();
+
 
 	}
 
 	public RestResponsePaymentDTO(String message, PaymentDTO paymentDTO) {
-		super();
+
 		this.message = message;
 		this.paymentDTO = paymentDTO;
 	}

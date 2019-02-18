@@ -47,14 +47,14 @@ public class Parking implements Serializable{
 	private int state;
 
 	public Parking() {
-		super();
+
 		
 	}
 
 	
 	public Parking(Vehicle vehicle, String hourCheckIn, String hourCheckOut, Date dateCheckIn, Date dateCheckOut,
 			int state) {
-		super();
+
 		this.vehicle = vehicle;
 		this.hourCheckIn = hourCheckIn;
 		this.hourCheckOut = hourCheckOut;

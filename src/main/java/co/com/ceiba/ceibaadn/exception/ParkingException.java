@@ -1,6 +1,6 @@
 package co.com.ceiba.ceibaadn.exception;
 
-public class ParkingException extends Exception{
+public class ParkingException extends RuntimeException{
 
 
 	private static final long serialVersionUID = 1L;
@@ -11,11 +11,5 @@ public class ParkingException extends Exception{
 
 	}
 
-
-
-	
-	
-	
-	
 
 }

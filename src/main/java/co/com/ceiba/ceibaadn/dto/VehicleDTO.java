@@ -19,13 +19,21 @@ public class VehicleDTO implements Serializable{
 	
 	public VehicleDTO() {
 		
-		super();
+
 
 	}
 
 	public VehicleDTO(int idDTO, String licenseDTO, String cylinderDTO, int typeVehicleDTO) {
-		super();
+
 		this.idDTO = idDTO;
+		this.licenseDTO = licenseDTO;
+		this.cylinderDTO = cylinderDTO;
+		this.typeVehicleDTO = typeVehicleDTO;
+	}
+
+
+	public VehicleDTO(String licenseDTO, String cylinderDTO, int typeVehicleDTO) {
+
 		this.licenseDTO = licenseDTO;
 		this.cylinderDTO = cylinderDTO;
 		this.typeVehicleDTO = typeVehicleDTO;

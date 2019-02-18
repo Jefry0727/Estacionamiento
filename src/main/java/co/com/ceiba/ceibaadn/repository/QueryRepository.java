@@ -19,8 +19,10 @@ public class QueryRepository {
 	public int quantityVehicleByType(int typeVehicle) {
 
 		Query query = entityManager.createQuery(
-				"SELECT count(p.id) FROM Parking p join Vehicle v on v.id = p.vehicle.id where v.vehicleType = "
-						+ typeVehicle + " and p.state = 1");
+				"SELECT count(p.id) FROM Parking p join Vehicle v on v.id = p.vehicle.id where v.vehicleType = :type and p.state = :state");
+
+		query.setParameter("type", typeVehicle);
+		query.setParameter("state", 1);
 
 		return Integer.parseInt(query.getSingleResult().toString());
 
@@ -28,9 +30,11 @@ public class QueryRepository {
 
 	public Parking findVehicleParking(String licensePlate) {
 
-		Query query = entityManager
-				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = '"
-						+ licensePlate + "' AND p.state = 1");
+		Query query = entityManager.createQuery(
+				"SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE v.licensePlate = :license AND p.state = : s");
+
+		query.setParameter("license", licensePlate);
+		query.setParameter("s", 1);
 
 		List<?> result = query.getResultList();
 
@@ -46,9 +50,11 @@ public class QueryRepository {
 	public Payment findVehiclePayment(String licensePlate) {
 
 		Query query = entityManager.createQuery(
-				"SELECT py FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id join Payment py on py.parking.id = p.id WHERE v.licensePlate = '"
-						+ licensePlate + "' AND p.state = 0");
-
+				"SELECT py FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id join Payment py on py.parking.id = p.id WHERE v.licensePlate = :license AND p.state = :states");
+		
+		query.setParameter("license", licensePlate);
+		query.setParameter("states", 0);
+		
 		List<?> result = query.getResultList();
 
 		if (!result.isEmpty()) {
@@ -64,8 +70,9 @@ public class QueryRepository {
 	public List<Parking> getListParking() {
 
 		Query query = entityManager
-				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE p.state = 1");
+				.createQuery("SELECT p FROM Parking p JOIN Vehicle v ON v.id = p.vehicle.id WHERE p.state = :states");
 
+		query.setParameter("states", 1);
 		return (List<Parking>) query.getResultList();
 
 	}
